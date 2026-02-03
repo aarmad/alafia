@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react'
-import { useChat } from 'ai/react'
+import { useChat } from '@ai-sdk/react'
 import Navbar from '@/components/Navbar'
 import { Send, Bot, User, Loader2, AlertCircle } from 'lucide-react'
 
