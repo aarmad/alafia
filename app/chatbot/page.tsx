@@ -1,21 +1,27 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
-import { useChat } from '@ai-sdk/react'
+import { useRef, useEffect, useState } from 'react'
 import Navbar from '@/components/Navbar'
 import { Send, Bot, User, Loader2, AlertCircle } from 'lucide-react'
 
+interface Message {
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+    createdAt?: Date;
+}
+
 export default function ChatbotPage() {
-    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-        api: '/api/chat',
-        initialMessages: [
-            {
-                id: '1',
-                role: 'assistant',
-                content: 'Bonjour ! Je suis votre assistant santé ALAFIA. Comment puis-je vous aider aujourd\'hui ?',
-            },
-        ],
-    })
+    const [chatInput, setChatInput] = useState('')
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: '1',
+            role: 'assistant',
+            content: 'Bonjour ! Je suis votre assistant santé ALAFIA. Comment puis-je vous aider aujourd\'hui ?',
+            createdAt: new Date()
+        },
+    ])
+    const [isLoading, setIsLoading] = useState(false)
 
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -26,6 +32,61 @@ export default function ChatbotPage() {
     useEffect(() => {
         scrollToBottom()
     }, [messages])
+
+    const handleChatSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!chatInput.trim() || isLoading) return
+
+        const userContent = chatInput
+        setChatInput('')
+
+        const userMessage: Message = {
+            id: Date.now().toString(),
+            role: 'user',
+            content: userContent,
+            createdAt: new Date()
+        }
+
+        setMessages(prev => [...prev, userMessage])
+        setIsLoading(true)
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [...messages, userMessage].map(m => ({
+                        role: m.role,
+                        content: m.content
+                    }))
+                })
+            })
+
+            const data = await response.json()
+
+            if (data.messages && data.messages.length > 0) {
+                const aiMessage: Message = {
+                    ...data.messages[0],
+                    id: Date.now().toString() + '-ai',
+                    createdAt: new Date()
+                }
+                setMessages(prev => [...prev, aiMessage])
+            } else {
+                throw new Error("Réponse vide de l'IA")
+            }
+        } catch (error) {
+            console.error("Erreur Chatbot:", error)
+            const errorMessage: Message = {
+                id: Date.now().toString() + '-error',
+                role: 'assistant',
+                content: "Désolé, je rencontre une difficulté technique. Veuillez vérifier votre connexion ou réessayer plus tard.",
+                createdAt: new Date()
+            }
+            setMessages(prev => [...prev, errorMessage])
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -44,7 +105,7 @@ export default function ChatbotPage() {
                     {/* Header */}
                     <div className="text-center mb-6">
                         <div className="flex items-center justify-center mb-4">
-                            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-full">
+                            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-full shadow-lg">
                                 <Bot className="w-8 h-8 text-white" />
                             </div>
                         </div>
@@ -52,12 +113,12 @@ export default function ChatbotPage() {
                             Assistant Santé ALAFIA
                         </h1>
                         <p className="text-muted-foreground text-sm">
-                            Propulsé par Mistral AI
+                            Propulsé par Mistral AI (Togo)
                         </p>
                     </div>
 
                     {/* Disclaimer */}
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 flex items-start space-x-3">
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 flex items-start space-x-3 shadow-sm">
                         <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                         <p className="text-xs text-amber-800">
                             <strong>Urgence :</strong> Appelez le 118 (Pompiers) ou le 8200 (SAMU).
@@ -71,25 +132,28 @@ export default function ChatbotPage() {
                                 key={m.id}
                                 className={`flex items-start space-x-3 ${m.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}
                             >
-                                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${m.role === 'user' ? 'bg-primary' : 'bg-accent'}`}>
+                                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center shadow-sm ${m.role === 'user' ? 'bg-primary' : 'bg-gradient-to-br from-accent to-primary'}`}>
                                     {m.role === 'user' ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
                                 </div>
                                 <div className={`flex-1 px-4 py-3 rounded-lg shadow-sm border ${m.role === 'user' ? 'bg-primary text-white' : 'bg-white'}`}>
                                     <div className="text-sm prose prose-sm max-w-none whitespace-pre-line">
                                         {m.content}
                                     </div>
+                                    <div className={`text-[10px] mt-1 ${m.role === 'user' ? 'text-white/70' : 'text-muted-foreground'}`}>
+                                        {m.createdAt?.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                                    </div>
                                 </div>
                             </div>
                         ))}
 
-                        {isLoading && messages[messages.length - 1]?.role === 'user' && (
+                        {isLoading && (
                             <div className="flex items-start space-x-3 animate-pulse">
-                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent flex items-center justify-center shadow-sm">
                                     <Bot className="w-5 h-5 text-white" />
                                 </div>
-                                <div className="px-4 py-3 rounded-lg bg-white border flex items-center space-x-2">
+                                <div className="px-4 py-3 rounded-lg bg-white border flex items-center space-x-2 shadow-sm">
                                     <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                                    <span className="text-sm text-muted-foreground italic">ALAFIA réfléchit...</span>
+                                    <span className="text-sm text-muted-foreground italic">ALAFIA analyse vos symptômes...</span>
                                 </div>
                             </div>
                         )}
@@ -97,20 +161,20 @@ export default function ChatbotPage() {
                     </div>
 
                     {/* Input Area */}
-                    <form onSubmit={handleSubmit} className="bg-white rounded-xl border p-4 shadow-lg">
+                    <form onSubmit={handleChatSubmit} className="bg-white rounded-xl border p-4 shadow-xl mb-2">
                         <div className="flex items-end space-x-3">
                             <textarea
-                                value={input}
-                                onChange={handleInputChange}
+                                value={chatInput}
+                                onChange={(e) => setChatInput(e.target.value)}
                                 onKeyDown={handleKeyPress}
-                                placeholder="Posez votre question de santé..."
+                                placeholder="Décrivez comment vous vous sentez..."
                                 rows={1}
-                                className="flex-1 border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none text-sm resize-none"
+                                className="flex-1 border border-border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none text-sm resize-none transition-all"
                             />
                             <button
                                 type="submit"
-                                disabled={!input.trim() || isLoading}
-                                className="bg-primary hover:bg-primary/90 text-white p-3 rounded-lg disabled:opacity-50 transition-colors"
+                                disabled={!chatInput.trim() || isLoading}
+                                className="bg-primary hover:bg-primary/90 text-white p-3 rounded-lg disabled:opacity-50 transition-all active:scale-95 shadow-md"
                             >
                                 <Send className="w-5 h-5" />
                             </button>
