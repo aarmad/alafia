@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     if (!process.env.HUGGINGFACE_API_KEY) {
       return new Response(JSON.stringify({
-        messages: [{ role: 'assistant', content: "Erreur : Clé API manquante dans .env.local." }]
+        messages: [{ role: 'assistant', content: "Erreur : Clé API manquante." }]
       }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
 
@@ -19,32 +19,31 @@ export async function POST(req: Request) {
     const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
     const diseases = JSON.parse(fileContents);
 
-    const systemPrompt = `Tu es ALAFIA, assistant médical intelligent au Togo.
-        Connaissances : ${JSON.stringify(diseases.slice(0, 5))}.
-        Urgence -> 118 ou 8200.
-        Réponds brièvement en Markdown. Pas de diagnostic médical définitif.`;
+    // On fusionne le système dans le contexte pour une compatibilité maximale
+    const contextualMessages = [
+      {
+        role: 'user',
+        content: `Système: Tu es ALAFIA, assistant médical au Togo. Urgence: 118 ou 8200. Connaissances: ${JSON.stringify(diseases.slice(0, 5))}. Réponds brièvement en Markdown.`
+      },
+      { role: 'assistant', content: "Compris. Je suis prêt à vous aider." },
+      ...messages
+    ];
 
     const result = await generateText({
-      model: huggingface('mistralai/Mistral-7B-Instruct-v0.3') as any,
-      system: systemPrompt,
-      messages: messages,
+      // Phi-3 est très stable sur l'API Inference de Hugging Face
+      model: huggingface('microsoft/Phi-3-mini-4k-instruct') as any,
+      messages: contextualMessages,
+      maxTokens: 500,
     });
 
     return new Response(JSON.stringify({
       messages: [{ role: 'assistant', content: result.text }]
     }), { headers: { 'Content-Type': 'application/json' } });
+
   } catch (error: any) {
     console.error("Chat API Error:", error);
-
-    let userMessage = "Désolé, je rencontre une difficulté technique.";
-    if (error.message.includes('403')) {
-      userMessage = "⚠️ Permission refusée : Votre token Hugging Face doit être de type 'Write' ou avoir les droits 'Inference'.";
-    } else if (error.message.includes('400')) {
-      userMessage = "⚠️ Erreur API : Le modèle est surchargé. Merci de réessayer dans 30 secondes.";
-    }
-
     return new Response(JSON.stringify({
-      messages: [{ role: 'assistant', content: userMessage }]
+      messages: [{ role: 'assistant', content: "Désolé, je rencontre une difficulté avec le moteur de calcul de l'IA. Merci de réessayer." }]
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
   }
 }
