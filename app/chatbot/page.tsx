@@ -26,67 +26,178 @@ export default function ChatbotPage() {
         scrollToBottom()
     }, [messages])
 
-    // Système de réponses basé sur des règles (simple chatbot)
     const generateResponse = (userMessage: string): string => {
         const lowerMessage = userMessage.toLowerCase()
 
+        // --- URGENCES VITALES (Priorité absolue) ---
+
+        // AVC
+        if (lowerMessage.includes('avc') || (lowerMessage.includes('visage') && lowerMessage.includes('paralysé')) || (lowerMessage.includes('parler') && lowerMessage.includes('impossible'))) {
+            return `🚨 SUSPICION D'AVC - AGISSEZ VITE (VITE) !
+            
+⚠️ Appelez immédiatement le SAMU (8200) ou les Pompiers (118).
+
+Signes d'alerte (VITE) :
+- **V**isage paralysé (une lèvre tombe ?)
+- **I**nertie d'un membre (bras ou jambe qui ne bouge plus ?)
+- **T**rouble de la parole (difficulté à parler ?)
+- **E**n urgence, appelez le 118 !
+
+Ne donnez rien à manger ni à boire. Allongez la personne en attendant les secours.`
+        }
+
+        // --- MALADIES COURANTES AU TOGO ---
+
+        // Paludisme (Malaria) - Très complet car critique
+        if (lowerMessage.includes('palu') || lowerMessage.includes('malaria') || (lowerMessage.includes('fièvre') && lowerMessage.includes('frisson'))) {
+            return `🦟 **Suspicion de Paludisme**
+
+Le paludisme est la première cause de consultation au Togo. C'est une urgence.
+
+**Symptômes fréquents :**
+- Fièvre élevée (> 38°C) par accès
+- Frissons intenses et sueurs
+- Maux de tête et courbatures
+- Nausées ou vomissements
+- Fatigue extrême
+
+**🚑 ACTION IMMÉDIATE :**
+1. **Ne prenez pas de médicaments au hasard.**
+2. Rendez-vous au centre de santé le plus proche pour un **TDR (Test Rapide)** ou une Goutte Épaisse.
+3. Si le test est positif, suivez le traitement (Artémisinine) prescrit jusqu'au bout.
+
+**⚠️ DANGER :**
+Chez l'enfant ou la femme enceinte, le paludisme tue rapidement. Consultez dès les premiers signes de fièvre.`
+        }
+
+        // Typhoïde
+        if (lowerMessage.includes('typho') || (lowerMessage.includes('fièvre') && lowerMessage.includes('ventre') && lowerMessage.includes('dure'))) {
+            return `🦠 **Fièvre Typhoïde ?**
+
+Si vous avez une fièvre qui dure depuis plusieurs jours avec des maux de ventre, cela peut être la typhoïde.
+
+**Signes :**
+- Fièvre qui monte progressivement (en "plateau")
+- Maux de tête intenses
+- Douleurs abdominales, diarrhée ou constipation
+- Fatigue extrême (tuphos)
+
+**Conseil :**
+Consultez un médecin pour une analyse de sang (Widal) et de selles. Ne vous soignez pas seul, des antibiotiques spécifiques sont nécessaires.`
+        }
+
+        // Choléra (Diarrhée eau de riz)
+        if (lowerMessage.includes('choléra') || (lowerMessage.includes('diarrhée') && lowerMessage.includes('eau') && lowerMessage.includes('riz'))) {
+            return `🚨 **ALERTE CHOLÉRA / DIARRHÉE SÉVÈRE**
+
+Si vous avez des diarrhées très liquides (comme de l'eau de riz) et abondantes :
+
+1. **URGENCE : Risque de décès par déshydratation en quelques heures.**
+2. Buvez immédiatement et continuellement (SRO - Sels de Réhydratation Orale, ou eau + sucre + sel).
+3. Rendez-vous immédiatement à l'hôpital.
+4. Isolez le malade et lavez-vous les mains à l'eau de javel diluée.`
+        }
+
+        // --- SYMPTÔMES COURANTS ---
+
         // Maux de tête
-        if (lowerMessage.includes('tête') || lowerMessage.includes('migraine') || lowerMessage.includes('céphalée')) {
-            return `Pour un mal de tête :\n\n✅ Conseils immédiats :\n- Reposez-vous dans un endroit calme et sombre\n- Buvez beaucoup d'eau (déshydratation fréquente)\n- Appliquez une compresse froide sur le front\n- Évitez les écrans\n\n💊 Médicaments courants :\n- Paracétamol (500mg-1g)\n- Ibuprofène (si pas de contre-indication)\n\n⚠️ Consultez un médecin si :\n- Le mal de tête est soudain et très intense\n- Accompagné de fièvre, raideur de nuque\n- Troubles de la vision\n- Dure plus de 3 jours\n\nVoulez-vous que je vous aide à trouver une pharmacie proche ?`
+        if (lowerMessage.includes('tête') || lowerMessage.includes('migraine')) {
+            return `� **Maux de tête / Migraine**
+
+**Pour soulager :**
+1. Repos au calme et dans le noir.
+2. Hydratation (buvez 2 verres d'eau).
+3. Paracétamol (Doliprane/Efferalgan) : 500mg ou 1g (selon poids).
+
+**⚠️ Consultez si :**
+- "Le pire mal de tête de votre vie" (soudain)
+- Raideur de la nuque + Fièvre (Méningite ?)
+- Après un choc à la tête`
         }
 
-        // Fièvre
-        if (lowerMessage.includes('fièvre') || lowerMessage.includes('température') || lowerMessage.includes('chaud')) {
-            return `Pour la fièvre :\n\n🌡️ Mesures immédiates :\n- Prenez votre température\n- Buvez beaucoup d'eau et de liquides\n- Portez des vêtements légers\n- Reposez-vous\n\n💊 Traitement :\n- Paracétamol toutes les 6h (max 4g/jour)\n- Bain tiède (pas froid)\n\n⚠️ Allez à l'hôpital si :\n- Fièvre > 39°C persistante\n- Convulsions\n- Difficultés respiratoires\n- Confusion ou somnolence excessive\n- Chez un nourrisson < 3 mois\n\nLa fièvre est souvent le signe que le corps combat une infection. Voulez-vous localiser une pharmacie ?`
+        // Fièvre (Distinction Enfant/Adulte)
+        if (lowerMessage.includes('fièvre') || lowerMessage.includes('chaud')) {
+            if (lowerMessage.includes('bébé') || lowerMessage.includes('enfant')) {
+                return `👶 **Fièvre chez l'enfant**
+
+1. **Découvrez l'enfant** (body ou couche simple).
+2. **Faites-le boire** souvent (eau ou SRO).
+3. **Paracétamol** : Dose poids toutes les 6h.
+4. **Bain** : 2°C en dessous de sa température (tiède, jamais froid).
+
+**🏥 HOPITAL IMMÉDIAT SI :**
+- Bébé de moins de 3 mois
+- Convulsions
+- Taches sur la peau
+- Enfant mou qui ne réagit pas`
+            }
+            return `🌡️ **Fièvre Adulte**
+
+- Repos et hydratation maximum.
+- Paracétamol 1g toutes les 6h si besoin.
+- Surveillez l'apparition d'autres signes (toux, brûlures urinaires, maux de ventre) pour identifier la cause (Palu ? Grippe ? Infection ?).
+
+Si la fièvre dépasse 48h, consultez un médecin.`
         }
 
-        // Toux
-        if (lowerMessage.includes('toux') || lowerMessage.includes('tousse')) {
-            return `Pour la toux :\n\n✅ Conseils :\n- Buvez beaucoup d'eau chaude avec du miel et citron\n- Humidifiez l'air de votre chambre\n- Évitez les irritants (fumée, poussière)\n- Dormez avec la tête surélevée\n\n💊 Selon le type :\n- Toux sèche : sirop antitussif\n- Toux grasse : expectorant, hydratation\n\n⚠️ Consultez si :\n- Toux avec sang\n- Difficultés respiratoires\n- Fièvre élevée persistante\n- Dure plus de 3 semaines\n- Douleur thoracique\n\nPuis-je vous aider à trouver une pharmacie ?`
+        // Maux de ventre
+        if (lowerMessage.includes('ventre') || lowerMessage.includes('estomac')) {
+            if (lowerMessage.includes('règle') || lowerMessage.includes('menstru')) {
+                return `🌸 **Douleurs menstruelles**
+                
+- Chaleur sur le ventre (bouillotte).
+- Antispasmodique (Spasfon) + Ibuprofène.
+- Repos.`
+            }
+            return `🤢 **Maux de ventre**
+
+- **Brûlures (estomac) ?** Anti-acide (Maalox, Gaviscon). Évitez piment/café.
+- **Crampes + Diarrhée ?** SRO + Smecta. Mangez du riz/banane.
+- **Douleur bas droite + Fièvre ?** Possible Appendicite -> Urgences.
+
+Si la douleur est insupportable, contactez un médecin.`
         }
 
-        // Douleurs abdominales
-        if (lowerMessage.includes('ventre') || lowerMessage.includes('abdomen') || lowerMessage.includes('estomac') || lowerMessage.includes('diarrhée')) {
-            return `Pour les douleurs abdominales :\n\n✅ Mesures générales :\n- Hydratation importante (eau, SRO)\n- Alimentation légère (riz, banane, pain grillé)\n- Évitez les aliments gras et épicés\n- Repos\n\n💊 Selon les symptômes :\n- Diarrhée : SRO, probiotiques\n- Constipation : fibres, eau\n- Brûlures d'estomac : antiacides\n\n🚨 URGENCE - Allez à l'hôpital si :\n- Douleur intense et soudaine\n- Sang dans les selles\n- Vomissements persistants\n- Fièvre élevée\n- Abdomen dur et gonflé\n- Signes de déshydratation\n\nVoulez-vous que je vous oriente vers une pharmacie ou un hôpital ?`
+        // Rhume / Grippe
+        if (lowerMessage.includes('rhume') || lowerMessage.includes('nez') || lowerMessage.includes('grippe') || lowerMessage.includes('courbature')) {
+            return `🤧 **Syndrome Grippal / Rhume**
+
+C'est probablement viral. Les antibiotiques sont inutiles.
+
+**Traitement :**
+- Lavage de nez (sérum phy ou eau de mer).
+- Paracétamol pour la fièvre/douleurs.
+- Repos et Vitamine C (Oranges, Citrons).
+- Miel pour la gorge.
+
+Consultez si vous avez du mal à respirer.`
         }
 
-        // Grossesse
-        if (lowerMessage.includes('enceinte') || lowerMessage.includes('grossesse') || lowerMessage.includes('bébé')) {
-            return `Conseils pour la grossesse :\n\n✅ Suivi essentiel :\n- Consultations prénatales régulières\n- Échographies aux trimestres recommandés\n- Suppléments : acide folique, fer, calcium\n\n🥗 Alimentation :\n- Repas équilibrés et variés\n- Beaucoup d'eau (2-3L/jour)\n- Évitez : alcool, tabac, viandes crues\n\n⚠️ Signaux d'alerte - Consultez immédiatement :\n- Saignements vaginaux\n- Douleurs abdominales intenses\n- Maux de tête sévères\n- Gonflement soudain des mains/visage\n- Diminution des mouvements du bébé\n- Fièvre élevée\n\n💡 ALAFIA propose un suivi de grossesse personnalisé ! Créez un compte pour bénéficier de rappels et conseils adaptés à votre terme.\n\nVoulez-vous créer un profil de suivi de grossesse ?`
+        // --- QUESTIONS PRATIQUES ---
+
+        // Pharmacies de garde
+        if (lowerMessage.includes('garde') || lowerMessage.includes('ouverte') || lowerMessage.includes('nuit')) {
+            return `🌙 **Pharmacies de Garde**
+
+Vous pouvez voir les pharmacies de garde directement sur la **page d'accueil** d'ALAFIA.
+Elles sont indiquées par un badge vert "DE GARDE".
+
+Voulez-vous que je vous donne le lien vers la liste ?`
         }
 
-        // Paludisme (très courant au Togo)
-        if (lowerMessage.includes('palu') || lowerMessage.includes('malaria') || lowerMessage.includes('moustique')) {
-            return `Concernant le paludisme :\n\n🦟 Symptômes typiques :\n- Fièvre élevée avec frissons\n- Maux de tête intenses\n- Douleurs musculaires\n- Nausées et vomissements\n- Fatigue extrême\n\n⚠️ IMPORTANT :\nLe paludisme est une URGENCE MÉDICALE au Togo.\nConsultez IMMÉDIATEMENT un centre de santé pour :\n- Test de diagnostic rapide (TDR)\n- Traitement antipaludéen approprié\n\n🛡️ Prévention :\n- Moustiquaire imprégnée\n- Répulsifs anti-moustiques\n- Vêtements longs le soir\n- Éliminer les eaux stagnantes\n\n❌ NE VOUS AUTO-MÉDICAMENTEZ PAS\nUn traitement inadapté peut être dangereux.\n\nVoulez-vous que je vous indique l'hôpital le plus proche ?`
-        }
+        // --- DÉFAUT ---
+        return `Je suis un assistant médical intelligent, mais je ne suis pas un docteur.
 
-        // Diabète
-        if (lowerMessage.includes('diabète') || lowerMessage.includes('sucre') || lowerMessage.includes('glycémie')) {
-            return `Gestion du diabète :\n\n📊 Suivi essentiel :\n- Contrôle régulier de la glycémie\n- Consultations médicales régulières\n- Respect du traitement prescrit\n\n🥗 Alimentation :\n- Limitez les sucres rapides\n- Privilégiez les fibres (légumes, céréales complètes)\n- Repas réguliers et équilibrés\n- Hydratation suffisante\n\n💪 Activité physique :\n- 30 minutes de marche quotidienne\n- Exercices réguliers adaptés\n\n⚠️ Signes d'urgence :\n- Hypoglycémie : tremblements, sueurs, confusion\n- Hyperglycémie : soif intense, urines fréquentes\n- Plaies qui ne guérissent pas\n\n💡 ALAFIA propose un suivi personnalisé pour les personnes âgées avec gestion des traitements et rappels !\n\nVoulez-vous créer un profil de suivi santé ?`
-        }
+Je peux vous aider sur :
+- 🦟 Le Paludisme
+- 🌡️ La Fièvre (Enfant/Adulte)
+- 🤕 Les migraines
+- 🤰 La grossesse
+- 📍 Les pharmacies de garde
 
-        // Hypertension
-        if (lowerMessage.includes('tension') || lowerMessage.includes('hypertension') || lowerMessage.includes('pression')) {
-            return `Gestion de la tension artérielle :\n\n📊 Surveillance :\n- Contrôlez régulièrement votre tension\n- Notez les valeurs (matin et soir)\n- Consultations médicales régulières\n\n🥗 Hygiène de vie :\n- Réduisez le sel dans l'alimentation\n- Alimentation riche en fruits et légumes\n- Évitez l'alcool et le tabac\n- Gestion du stress\n\n💪 Activité physique :\n- Marche quotidienne\n- Exercices modérés réguliers\n\n⚠️ Consultez en urgence si :\n- Maux de tête sévères\n- Troubles de la vision\n- Douleur thoracique\n- Essoufflement important\n- Saignement de nez persistant\n\n💊 Prenez vos médicaments comme prescrits, même si vous vous sentez bien !\n\nVoulez-vous un rappel pour vos médicaments ?`
-        }
+Décrivez simplement ce que vous ressentez (exemple : *"J'ai de la fièvre et je tremble"*).
 
-        // Don de sang
-        if (lowerMessage.includes('sang') || lowerMessage.includes('don') || lowerMessage.includes('donneur')) {
-            return `Don de sang :\n\n✅ Conditions pour donner :\n- Âge : 18-65 ans\n- Poids : > 50 kg\n- Bonne santé générale\n- Pas de maladie transmissible\n\n📅 Fréquence :\n- Hommes : tous les 3 mois\n- Femmes : tous les 4 mois\n\n🏥 Où donner à Lomé :\n- Centre National de Transfusion Sanguine (CNTS)\n- CHU Sylvanus Olympio\n- Hôpitaux régionaux lors de collectes\n\n💡 ALAFIA propose un profil donneur de sang !\nVous serez alerté quand votre groupe sanguin est recherché.\n\nVoulez-vous créer un profil donneur ?`
-        }
-
-        // Médicaments généraux
-        if (lowerMessage.includes('médicament') || lowerMessage.includes('pharmacie') || lowerMessage.includes('acheter')) {
-            return `Concernant les médicaments :\n\n✅ Conseils importants :\n- Respectez toujours les prescriptions médicales\n- Ne partagez pas vos médicaments\n- Vérifiez les dates de péremption\n- Conservez-les correctement (à l'abri de la chaleur)\n\n⚠️ Auto-médication :\nCertains médicaments peuvent être dangereux sans avis médical.\nEn cas de doute, consultez un professionnel de santé.\n\n💊 Médicaments courants disponibles sans ordonnance :\n- Paracétamol (douleurs, fièvre)\n- Ibuprofène (douleurs, inflammation)\n- Antiacides (brûlures d'estomac)\n- SRO (réhydratation)\n\n🔍 Je peux vous aider à :\n- Trouver une pharmacie proche\n- Localiser un médicament spécifique\n- Trouver une pharmacie de garde\n\nQue recherchez-vous exactement ?`
-        }
-
-        // Urgences
-        if (lowerMessage.includes('urgence') || lowerMessage.includes('grave') || lowerMessage.includes('hôpital')) {
-            return `🚨 URGENCES MÉDICALES :\n\n📞 Numéros d'urgence au Togo :\n- SAMU : 8200\n- Pompiers : 118\n- Police : 117\n\n🏥 Hôpitaux principaux à Lomé :\n- CHU Sylvanus Olympio (Tokoin)\n- CHU Campus (Université de Lomé)\n- Clinique Biasa\n- Polyclinique Internationale\n\n⚠️ Situations d'urgence :\n- Difficultés respiratoires sévères\n- Douleur thoracique\n- Perte de conscience\n- Saignements importants\n- Traumatisme grave\n- Convulsions\n- Brûlures étendues\n\n👉 EN CAS D'URGENCE VITALE :\nAPPELEZ IMMÉDIATEMENT LE 8200 OU RENDEZ-VOUS AUX URGENCES !\n\nVoulez-vous que je vous aide à localiser l'hôpital le plus proche ?`
-        }
-
-        // Réponse par défaut
-        return `Je comprends votre préoccupation. Pour vous aider au mieux, pourriez-vous me donner plus de détails sur :\n\n- Vos symptômes précis\n- Depuis quand vous les ressentez\n- Leur intensité (légère, modérée, sévère)\n- D'autres signes associés\n\n💡 Je peux vous aider avec :\n✅ Conseils santé de base\n✅ Orientation vers les soins appropriés\n✅ Recherche de pharmacies et médicaments\n✅ Informations sur les maladies courantes\n\n⚠️ Rappel important :\nJe ne remplace pas un médecin. En cas de symptômes graves ou persistants, consultez un professionnel de santé.\n\nComment puis-je vous aider ?`
+*En cas d'urgence vitale, appelez le 118 ou le 8200.*`
     }
 
     const handleSend = async () => {
@@ -164,8 +275,8 @@ export default function ChatbotPage() {
                             >
                                 <div
                                     className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${message.role === 'user'
-                                            ? 'bg-primary'
-                                            : 'bg-gradient-to-br from-accent to-primary'
+                                        ? 'bg-primary'
+                                        : 'bg-gradient-to-br from-accent to-primary'
                                         }`}
                                 >
                                     {message.role === 'user' ? (
@@ -176,8 +287,8 @@ export default function ChatbotPage() {
                                 </div>
                                 <div
                                     className={`flex-1 px-4 py-3 rounded-lg ${message.role === 'user'
-                                            ? 'bg-primary text-white'
-                                            : 'bg-white border border-border'
+                                        ? 'bg-primary text-white'
+                                        : 'bg-white border border-border'
                                         }`}
                                 >
                                     <p className="whitespace-pre-line text-sm leading-relaxed">

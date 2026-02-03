@@ -44,9 +44,9 @@ export async function POST(req: Request) {
                     pharmacyName: profileData.pharmacyName,
                     license: profileData.license,
                     address: profileData.address,
-                    quartier: profileData.address, // Simplification pour l'exemple
+                    quartier: profileData.quartier || profileData.address,
                     phone: profileData.phone,
-                    whatsapp: profileData.phone, // Par défaut le même
+                    whatsapp: profileData.whatsapp || profileData.phone,
                 };
                 break;
             case 'pregnant':

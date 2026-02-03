@@ -1,19 +1,26 @@
 "use client"
 
 import { useState } from 'react'
-import { Calendar, Baby, Activity, Utensils, Droplets, Heart, Save } from 'lucide-react'
+import { Calendar, Baby, Activity, Utensils, Droplets, Heart, Edit2, ChevronRight } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import { toast } from 'sonner'
+import { Modal, ModalContent, ModalTrigger, ModalHeader, ModalTitle, ModalDescription } from '@/components/Modal'
 
 export default function PregnantDashboard({ user }: { user: any }) {
     const [profile, setProfile] = useState(user.profile)
     const [weeksPregnant, setWeeksPregnant] = useState(user.profile?.weeksPregnant || 0)
     const [loading, setLoading] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    // Form
+    const [newWeeks, setNewWeeks] = useState(weeksPregnant)
 
     const dueDate = profile?.dueDate ? new Date(profile.dueDate) : new Date()
     const progress = Math.min((weeksPregnant / 40) * 100, 100)
 
-    const updateWeeks = async () => {
+    const updateWeeks = async (e: React.FormEvent) => {
+        e.preventDefault()
         try {
             setLoading(true)
             const token = localStorage.getItem('token')
@@ -23,19 +30,22 @@ export default function PregnantDashboard({ user }: { user: any }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ updates: { weeksPregnant: parseInt(weeksPregnant) } })
+                body: JSON.stringify({ updates: { weeksPregnant: parseInt(newWeeks) } })
             })
             const data = await res.json()
             if (data.success) {
                 setProfile(data.data.user.profile)
+                setWeeksPregnant(data.data.user.profile.weeksPregnant)
                 // Update local storage
                 const currentUser = JSON.parse(localStorage.getItem('user') || '{}')
                 currentUser.profile = data.data.user.profile
                 localStorage.setItem('user', JSON.stringify(currentUser))
-                alert("Semaine mise à jour !")
+
+                toast.success("Suivi mis à jour avec succès !")
+                setIsModalOpen(false)
             }
         } catch (e) {
-            alert("Erreur de mise à jour")
+            toast.error("Erreur de mise à jour")
         } finally {
             setLoading(false)
         }
@@ -66,24 +76,65 @@ export default function PregnantDashboard({ user }: { user: any }) {
                                 <Baby className="w-5 h-5 text-pink-500" />
                                 Ma Progression
                             </h2>
-                            <div className="flex items-center gap-2">
-                                <label className="text-sm text-gray-500">Semaine actuelle :</label>
-                                <input
-                                    type="number"
-                                    min="0" max="42"
-                                    value={weeksPregnant}
-                                    onChange={(e) => setWeeksPregnant(e.target.value)}
-                                    className="w-16 p-1 border rounded text-center font-bold text-pink-600"
-                                />
-                                <button
-                                    onClick={updateWeeks}
-                                    disabled={loading}
-                                    className="p-1 bg-pink-100 text-pink-600 rounded hover:bg-pink-200"
-                                    title="Sauvegarder"
-                                >
-                                    <Save className="w-4 h-4" />
-                                </button>
-                            </div>
+
+                            <Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
+                                <ModalTrigger asChild>
+                                    <button
+                                        className="text-sm bg-pink-50 text-pink-600 px-3 py-1 rounded-full font-medium hover:bg-pink-100 transition-colors flex items-center gap-2"
+                                        onClick={() => setNewWeeks(weeksPregnant)} // Reset to current on open
+                                    >
+                                        Semaine {weeksPregnant}
+                                        <Edit2 className="w-3 h-3" />
+                                    </button>
+                                </ModalTrigger>
+                                <ModalContent>
+                                    <ModalHeader className="mb-4">
+                                        <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <Baby className="w-6 h-6 text-pink-500" />
+                                        </div>
+                                        <ModalTitle className="text-lg font-bold text-center">Mettre à jour ma grossesse</ModalTitle>
+                                        <ModalDescription className="text-sm text-gray-500 text-center">Où en êtes-vous aujourd'hui ?</ModalDescription>
+                                    </ModalHeader>
+                                    <form onSubmit={updateWeeks} className="space-y-6">
+                                        <div>
+                                            <label className="text-sm font-bold text-gray-700 block mb-2 text-center">
+                                                Nombre de semaines (aménorrhée)
+                                            </label>
+                                            <div className="flex items-center justify-center gap-4">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setNewWeeks(Math.max(0, parseInt(newWeeks) - 1))}
+                                                    className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200"
+                                                >
+                                                    -
+                                                </button>
+                                                <input
+                                                    type="number"
+                                                    className="text-3xl font-bold text-center w-20 bg-transparent border-none focus:ring-0 text-pink-600"
+                                                    value={newWeeks}
+                                                    onChange={(e) => setNewWeeks(e.target.value)}
+                                                    min="0" max="42"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setNewWeeks(Math.min(42, parseInt(newWeeks) + 1))}
+                                                    className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200"
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            disabled={loading}
+                                            className="btn-primary w-full bg-pink-500 hover:bg-pink-600 border-pink-600 text-white"
+                                        >
+                                            {loading ? 'Mise à jour...' : 'Valider'}
+                                        </button>
+                                    </form>
+                                </ModalContent>
+                            </Modal>
                         </div>
 
                         <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden mb-2">
@@ -130,6 +181,19 @@ export default function PregnantDashboard({ user }: { user: any }) {
                         <a href="/chatbot" className="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white rounded-lg py-2 transition-colors">
                             Parler au mini-docteur
                         </a>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-2xl border shadow-sm">
+                        <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <Activity className="w-5 h-5 text-pink-500" />
+                            Prochain RDV
+                        </h3>
+                        <div className="text-center py-4 text-gray-400 text-sm">
+                            Aucun rendez-vous prévu.
+                        </div>
+                        <button className="w-full mt-2 text-pink-600 text-sm font-medium hover:underline flex items-center justify-center gap-1">
+                            Planifier <ChevronRight className="w-4 h-4" />
+                        </button>
                     </div>
                 </div>
             </div>

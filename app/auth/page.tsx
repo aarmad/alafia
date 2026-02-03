@@ -20,6 +20,8 @@ export default function AuthPage() {
         pharmacyName: '',
         license: '',
         address: '',
+        quartier: '',
+        whatsapp: '',
         // Pregnant specific
         dueDate: '',
         weeksPregnant: '',
@@ -312,15 +314,15 @@ export default function AuthPage() {
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="block text-sm font-medium mb-2">Numéro de licence</label>
+                                                        <label className="block text-sm font-medium mb-2">Quartier</label>
                                                         <input
                                                             type="text"
-                                                            name="license"
-                                                            value={formData.license}
+                                                            name="quartier"
+                                                            value={formData.quartier || ''}
                                                             onChange={handleChange}
                                                             required
                                                             className="input-field"
-                                                            placeholder="N° de licence"
+                                                            placeholder="Ex: Bè, Agoè..."
                                                         />
                                                     </div>
                                                     <div>
@@ -334,9 +336,32 @@ export default function AuthPage() {
                                                                 onChange={handleChange}
                                                                 required
                                                                 className="input-field pl-10"
-                                                                placeholder="Quartier, rue..."
+                                                                placeholder="Rue, repères..."
                                                             />
                                                         </div>
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Numéro WhatsApp (Optionnel)</label>
+                                                        <input
+                                                            type="tel"
+                                                            name="whatsapp"
+                                                            value={formData.whatsapp || ''}
+                                                            onChange={handleChange}
+                                                            className="input-field"
+                                                            placeholder="+228 XX XX XX XX"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Numéro de licence</label>
+                                                        <input
+                                                            type="text"
+                                                            name="license"
+                                                            value={formData.license}
+                                                            onChange={handleChange}
+                                                            required
+                                                            className="input-field"
+                                                            placeholder="N° de licence"
+                                                        />
                                                     </div>
                                                 </>
                                             )}

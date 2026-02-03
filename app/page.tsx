@@ -6,16 +6,36 @@ import PharmacyCard from '@/components/PharmacyCard'
 import SearchBar from '@/components/SearchBar'
 import { MapPin, AlertCircle, Filter, Loader2 } from 'lucide-react'
 import type { Pharmacy } from '@/types'
-import pharmaciesData from '@/data/pharmacies.json'
+// pharmaciesData est maintenant géré par l'API
 
 export default function Home() {
-  const [pharmacies, setPharmacies] = useState<Pharmacy[]>(pharmaciesData as Pharmacy[])
-  const [filteredPharmacies, setFilteredPharmacies] = useState<Pharmacy[]>(pharmaciesData as Pharmacy[])
+  const [pharmacies, setPharmacies] = useState<Pharmacy[]>([])
+  const [filteredPharmacies, setFilteredPharmacies] = useState<Pharmacy[]>([])
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
   const [locationError, setLocationError] = useState<string | null>(null)
   const [isLoadingLocation, setIsLoadingLocation] = useState(false)
+  const [isLoadingPharmacies, setIsLoadingPharmacies] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterOnDuty, setFilterOnDuty] = useState(false)
+
+  // Charger les pharmacies depuis l'API
+  useEffect(() => {
+    const fetchPharmacies = async () => {
+      try {
+        const res = await fetch('/api/pharmacies')
+        const data = await res.json()
+        if (data.success) {
+          setPharmacies(data.data)
+          setFilteredPharmacies(data.data)
+        }
+      } catch (error) {
+        console.error('Erreur chargement pharmacies:', error)
+      } finally {
+        setIsLoadingPharmacies(false)
+      }
+    }
+    fetchPharmacies()
+  }, [])
 
   // Demander la localisation de l'utilisateur
   const requestLocation = () => {
@@ -143,8 +163,8 @@ export default function Home() {
                 <button
                   onClick={() => setFilterOnDuty(!filterOnDuty)}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${filterOnDuty
-                      ? 'bg-primary text-white'
-                      : 'bg-white border border-border hover:bg-muted'
+                    ? 'bg-primary text-white'
+                    : 'bg-white border border-border hover:bg-muted'
                     }`}
                 >
                   <Filter className="w-4 h-4" />
@@ -185,7 +205,12 @@ export default function Home() {
               <h2 className="text-2xl font-bold mb-6">Toutes les pharmacies</h2>
             )}
 
-            {filteredPharmacies.length === 0 ? (
+            {isLoadingPharmacies ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+                <p className="text-muted-foreground italic">Recherche des pharmacies...</p>
+              </div>
+            ) : filteredPharmacies.length === 0 ? (
               <div className="text-center py-12">
                 <AlertCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Aucune pharmacie trouvée</h3>

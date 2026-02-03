@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { Store, ShieldCheck, MapPin, Plus, Trash2, Package, AlertTriangle, Search, Clock } from 'lucide-react'
+import { toast } from 'sonner'
+import { Modal, ModalContent, ModalTrigger, ModalHeader, ModalTitle, ModalDescription } from '@/components/Modal'
 
 // Type local pour le médicament
 interface Medication {
@@ -16,6 +18,7 @@ export default function PharmacyDashboard({ user }: { user: any }) {
     const [isOnDuty, setIsOnDuty] = useState(user.profile?.isOnDuty || false)
     const [medications, setMedications] = useState<Medication[]>(user.profile?.medications || [])
     const [loading, setLoading] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     // Form state
     const [newMedName, setNewMedName] = useState('')
@@ -44,7 +47,7 @@ export default function PharmacyDashboard({ user }: { user: any }) {
             }
         } catch (e) {
             console.error(e)
-            alert("Erreur lors de la mise à jour")
+            toast.error("Erreur lors de la mise à jour")
         } finally {
             setLoading(false)
         }
@@ -54,6 +57,8 @@ export default function PharmacyDashboard({ user }: { user: any }) {
         const newState = !isOnDuty
         setIsOnDuty(newState)
         await updateProfile({ isOnDuty: newState })
+        if (newState) toast.success("Mode GARDE activé !")
+        else toast.info("Mode garde désactivé")
     }
 
     const addMedication = async (e: React.FormEvent) => {
@@ -69,12 +74,14 @@ export default function PharmacyDashboard({ user }: { user: any }) {
         const newMedsList = [...medications, newMed]
         setMedications(newMedsList)
 
-        // Reset form
+        // Reset form & close modal
         setNewMedName('')
         setNewMedQty('')
         setNewMedPrice('')
+        setIsModalOpen(false)
 
         await updateProfile({ medications: newMedsList })
+        toast.success(`${newMed.name} ajouté au stock`)
     }
 
     const removeMedication = async (index: number) => {
@@ -82,6 +89,7 @@ export default function PharmacyDashboard({ user }: { user: any }) {
         const newMedsList = medications.filter((_, i) => i !== index)
         setMedications(newMedsList)
         await updateProfile({ medications: newMedsList })
+        toast.success("Médicament retiré")
     }
 
     return (
@@ -116,57 +124,88 @@ export default function PharmacyDashboard({ user }: { user: any }) {
                                 <Package className="w-5 h-5 text-primary" />
                                 Inventaire du Stock
                             </h2>
-                            <span className="text-sm bg-white px-3 py-1 rounded-full border text-gray-600 font-medium">
-                                {medications.length} références
-                            </span>
-                        </div>
+                            <div className="flex items-center gap-3">
+                                <span className="text-sm bg-white px-3 py-1 rounded-full border text-gray-600 font-medium">
+                                    {medications.length} réf.
+                                </span>
 
-                        {/* Formulaire d'ajout rapide */}
-                        <form onSubmit={addMedication} className="p-4 bg-blue-50/50 border-b border-blue-100 flex flex-col md:flex-row gap-3 items-end">
-                            <div className="flex-1 w-full">
-                                <label className="text-xs font-semibold text-gray-500 mb-1 block">Nom du médicament</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ex: Paracétamol 1g"
-                                    className="input-field bg-white"
-                                    value={newMedName}
-                                    onChange={e => setNewMedName(e.target.value)}
-                                    required
-                                />
+                                <Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
+                                    <ModalTrigger asChild>
+                                        <button className="btn-primary px-4 py-2 flex items-center gap-2 text-sm shadow-md hover:shadow-lg transition-transform active:scale-95">
+                                            <Plus className="w-4 h-4" />
+                                            Nouveau
+                                        </button>
+                                    </ModalTrigger>
+                                    <ModalContent>
+                                        <ModalHeader className="mb-4">
+                                            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                                <Package className="w-6 h-6 text-primary" />
+                                            </div>
+                                            <ModalTitle className="text-xl font-bold text-gray-900 text-center">Ajouter un médicament</ModalTitle>
+                                            <ModalDescription className="text-sm text-gray-500 text-center">Remplissez les détails pour mettre à jour le stock.</ModalDescription>
+                                        </ModalHeader>
+
+                                        <form onSubmit={addMedication} className="space-y-4">
+                                            <div>
+                                                <label className="text-sm font-medium text-gray-700 block mb-1.5">Nom du produit</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Ex: Paracétamol 1g"
+                                                    className="input-field w-full text-base py-3"
+                                                    value={newMedName}
+                                                    onChange={e => setNewMedName(e.target.value)}
+                                                    required
+                                                    autoFocus
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="text-sm font-medium text-gray-700 block mb-1.5">Quantité</label>
+                                                    <input
+                                                        type="number"
+                                                        placeholder="0"
+                                                        className="input-field w-full"
+                                                        value={newMedQty}
+                                                        onChange={e => setNewMedQty(e.target.value)}
+                                                        required
+                                                        min="1"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-sm font-medium text-gray-700 block mb-1.5">Prix (FCFA)</label>
+                                                    <input
+                                                        type="number"
+                                                        placeholder="0"
+                                                        className="input-field w-full"
+                                                        value={newMedPrice}
+                                                        onChange={e => setNewMedPrice(e.target.value)}
+                                                        required
+                                                        min="0"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="pt-6">
+                                                <button
+                                                    type="submit"
+                                                    disabled={loading}
+                                                    className="btn-primary w-full py-3 text-base flex justify-center items-center gap-2"
+                                                >
+                                                    {loading ? (
+                                                        'Ajout en cours...'
+                                                    ) : (
+                                                        <>
+                                                            <Plus className="w-5 h-5" />
+                                                            Ajouter au stock
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </ModalContent>
+                                </Modal>
                             </div>
-                            <div className="w-full md:w-32">
-                                <label className="text-xs font-semibold text-gray-500 mb-1 block">Qté</label>
-                                <input
-                                    type="number"
-                                    placeholder="0"
-                                    className="input-field bg-white"
-                                    value={newMedQty}
-                                    onChange={e => setNewMedQty(e.target.value)}
-                                    required
-                                    min="1"
-                                />
-                            </div>
-                            <div className="w-full md:w-40">
-                                <label className="text-xs font-semibold text-gray-500 mb-1 block">Prix (FCFA)</label>
-                                <input
-                                    type="number"
-                                    placeholder="0"
-                                    className="input-field bg-white"
-                                    value={newMedPrice}
-                                    onChange={e => setNewMedPrice(e.target.value)}
-                                    required
-                                    min="0"
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full md:w-auto btn-primary h-11 flex items-center justify-center gap-2"
-                            >
-                                <Plus className="w-5 h-5" />
-                                Ajouter
-                            </button>
-                        </form>
+                        </div>
 
                         {/* Tableau des médicaments */}
                         <div className="overflow-x-auto">
@@ -183,31 +222,37 @@ export default function PharmacyDashboard({ user }: { user: any }) {
                                     {medications.length === 0 ? (
                                         <tr>
                                             <td colSpan={4} className="p-8 text-center text-gray-400">
-                                                Aucun médicament dans votre stock actuellement.
+                                                <div className="flex flex-col items-center gap-2">
+                                                    <Package className="w-8 h-8 opacity-20" />
+                                                    <p>Aucun médicament dans votre stock.</p>
+                                                    <button onClick={() => setIsModalOpen(true)} className="text-primary hover:underline mt-2">
+                                                        Ajouter le premier
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ) : (
                                         medications.map((med, idx) => (
                                             <tr key={idx} className="hover:bg-gray-50 transition-colors group">
                                                 <td className="p-4 font-medium text-gray-800">
-                                                    {typeof med === 'string' ? med : med.name} {/* Support legacy */}
+                                                    {typeof med === 'string' ? med : med.name}
                                                 </td>
                                                 <td className="p-4 text-center">
                                                     {typeof med === 'string' ? (
                                                         <span className="text-gray-400">-</span>
                                                     ) : (
-                                                        <span className={`px-3 py-1 rounded-full font-bold ${med.quantity < 10 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-700'}`}>
+                                                        <span className={`px-3 py-1 rounded-full font-bold text-xs ${med.quantity < 10 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-700'}`}>
                                                             {med.quantity}
                                                         </span>
                                                     )}
                                                 </td>
                                                 <td className="p-4 text-right font-mono text-gray-600">
-                                                    {typeof med === 'string' ? '-' : `${med.price} F`}
+                                                    {typeof med === 'string' ? '-' : `${med.price.toLocaleString()} F`}
                                                 </td>
                                                 <td className="p-4 text-center">
                                                     <button
                                                         onClick={() => removeMedication(idx)}
-                                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                                                         title="Supprimer"
                                                     >
                                                         <Trash2 className="w-4 h-4" />
@@ -265,8 +310,16 @@ export default function PharmacyDashboard({ user }: { user: any }) {
                                 <p className="font-medium">{profile?.pharmacyName}</p>
                             </div>
                             <div>
+                                <label className="text-xs text-gray-400 uppercase font-semibold">Quartier</label>
+                                <p className="font-medium">{profile?.quartier || 'Non défini'}</p>
+                            </div>
+                            <div>
                                 <label className="text-xs text-gray-400 uppercase font-semibold">Adresse</label>
                                 <p className="font-medium">{profile?.address}</p>
+                            </div>
+                            <div>
+                                <label className="text-xs text-gray-400 uppercase font-semibold">WhatsApp</label>
+                                <p className="font-medium">{profile?.whatsapp || profile?.phone}</p>
                             </div>
                             <div>
                                 <label className="text-xs text-gray-400 uppercase font-semibold">Licence</label>
