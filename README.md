@@ -126,7 +126,7 @@ MONGODB_URI=votre_url_mongodb
 JWT_SECRET=votre_secret_jwt
 
 # IA (Chatbot)
-HUGGING_FACE_API_KEY=votre_cle_hugging_face
+HUGGINGFACE_API_KEY=votre_cle_hugging_face
 ```
 
 ## 📊 Base de Données des Pharmacies

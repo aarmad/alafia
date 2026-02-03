@@ -7,21 +7,24 @@ import { NextResponse } from 'next/server';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  try {
+    const { messages } = await req.json();
 
-  if (!process.env.HUGGING_FACE_API_KEY) {
-    return NextResponse.json({
-      error: "La clé API Hugging Face (HUGGING_FACE_API_KEY) n'est pas configurée dans les variables d'environnement. Veuillez l'ajouter pour activer l'IA.",
-      success: false
-    }, { status: 500 });
-  }
+    console.log("Chat API called. API Key present:", !!process.env.HUGGINGFACE_API_KEY);
 
-  // Charger les données locales pour le contexte
-  const jsonDirectory = path.join(process.cwd(), 'data');
-  const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
-  const diseases = JSON.parse(fileContents);
+    if (!process.env.HUGGINGFACE_API_KEY) {
+      return NextResponse.json({
+        error: "La clé API Hugging Face (HUGGINGFACE_API_KEY) n'est pas configurée dans les variables d'environnement. Veuillez l'ajouter pour activer l'IA.",
+        success: false
+      }, { status: 500 });
+    }
 
-  const systemPrompt = `Tu es ALAFIA, un assistant médical intelligent spécialisé dans le contexte de santé au Togo. 
+    // Charger les données locales pour le contexte
+    const jsonDirectory = path.join(process.cwd(), 'data');
+    const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
+    const diseases = JSON.parse(fileContents);
+
+    const systemPrompt = `Tu es ALAFIA, un assistant médical intelligent spécialisé dans le contexte de santé au Togo. 
   Utilise les informations suivantes sur les maladies courantes pour donner des conseils précis : ${JSON.stringify(diseases)}.
   
   Règles importantes :
@@ -31,11 +34,20 @@ export async function POST(req: Request) {
   4. Adapte tes conseils au climat et à l'environnement du Togo.
   5. Réponds en utilisant du formatage Markdown pour la clarté.`;
 
-  const result = await streamText({
-    model: huggingface('mistralai/Mistral-7B-Instruct-v0.3') as any,
-    system: systemPrompt,
-    messages,
-  });
+    const result = await streamText({
+      model: huggingface('mistralai/Mistral-7B-Instruct-v0.3') as any,
+      system: systemPrompt,
+      messages,
+    });
 
-  return result.toDataStreamResponse();
+    console.log("Stream initiated successfully");
+    return result.toAIStreamResponse();
+  } catch (error: any) {
+    console.error("Chat API Error:", error);
+    return NextResponse.json({
+      error: "Une erreur est survenue lors de la communication avec l'IA. Vérifiez votre connexion et votre clé API.",
+      details: error.message,
+      success: false
+    }, { status: 500 });
+  }
 }

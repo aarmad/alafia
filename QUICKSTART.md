@@ -23,7 +23,7 @@ Pour que le backend et le chatbot IA fonctionnent, créez un fichier `.env.local
 ```bash
 MONGODB_URI=mongodb://localhost:27017/alafia
 JWT_SECRET=votre_cle_secrete_aleatoire
-HUGGING_FACE_API_KEY=votre_cle_hugging_face
+HUGGINGFACE_API_KEY=votre_cle_hugging_face
 ```
 
 ---
