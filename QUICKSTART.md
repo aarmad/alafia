@@ -19,10 +19,11 @@ http://localhost:3000
 ```
 
 ### 4️⃣ Configuration des Variables d'Environnement
-Pour que le backend fonctionne, créez un fichier `.env` à la racine :
+Pour que le backend et le chatbot IA fonctionnent, créez un fichier `.env.local` à la racine :
 ```bash
-MONGODB_URI=votre_uri_mongodb_atlas
-JWT_SECRET=une_cle_secrete_aleatoire
+MONGODB_URI=mongodb://localhost:27017/alafia
+JWT_SECRET=votre_cle_secrete_aleatoire
+HUGGING_FACE_API_KEY=votre_cle_hugging_face
 ```
 
 ---

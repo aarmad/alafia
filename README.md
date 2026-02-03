@@ -17,11 +17,11 @@
 - **Itinéraire Google Maps** : Navigation vers la pharmacie
 
 ### 🤖 Chatbot Médical IA
-- Assistant santé intelligent avec conseils adaptés au contexte togolais
-- Réponses sur les symptômes courants (paludisme, fièvre, maux de tête, etc.)
-- Orientation vers les soins appropriés
-- Numéros d'urgence et hôpitaux de Lomé
-- **100% Open-Source** - Système basé sur des règles
+- Assistant santé intelligent propulsé par **Mistral AI (Open Source)**
+- Réponses basées sur une base de connaissances médicale structurée
+- Conseils adaptés au contexte togolais (symptômes, urgences)
+- Orientation vers les soins appropriés et numéros d'urgence (118/8200)
+- Streaming des réponses en temps réel
 
 ### 👥 Gestion Multi-Profils
 
@@ -109,8 +109,24 @@ alafia-app/
 │   └── index.ts            # Définitions de types
 ├── public/                  # Fichiers statiques
 ├── netlify.toml            # Configuration Netlify
+├── .env.example            # Template des variables d'environnement
 └── package.json            # Dépendances
 
+```
+
+## 🔐 Configuration
+
+L'application nécessite les variables d'environnement suivantes dans un fichier `.env.local` :
+
+```bash
+# MongoDB
+MONGODB_URI=votre_url_mongodb
+
+# Authentification
+JWT_SECRET=votre_secret_jwt
+
+# IA (Chatbot)
+HUGGING_FACE_API_KEY=votre_cle_hugging_face
 ```
 
 ## 📊 Base de Données des Pharmacies
