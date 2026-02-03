@@ -1,0 +1,673 @@
+[
+    {
+        "id": "malaria",
+        "keywords": [
+            "palu",
+            "malaria",
+            "anophèle",
+            "moustique"
+        ],
+        "title": "🦟 Paludisme (Malaria)",
+        "description": "Première cause de consultation au Togo. Causé par des moustiques.",
+        "advice": "Rendez-vous immédiatement dans un centre de santé pour un test TDR. Ne prenez pas de médicaments sans diagnostic.",
+        "warning": "Urgence vitale chez l'enfant et la femme enceinte.",
+        "emergency": true
+    },
+    {
+        "id": "typhoid",
+        "keywords": [
+            "typho",
+            "widal",
+            "eau sale",
+            "mains sales"
+        ],
+        "title": "🦠 Fièvre Typhoïde",
+        "description": "Infection bactérienne liée à l'eau ou aux aliments contaminés.",
+        "advice": "Prenez rendez-vous pour un test de Widal. Nécessite souvent des antibiotiques spécifiques.",
+        "symptoms": [
+            "Fièvre prolongée",
+            "Maux de ventre",
+            "Fatigue extrême"
+        ],
+        "emergency": false
+    },
+    {
+        "id": "cholera",
+        "keywords": [
+            "choléra",
+            "diarrhée eau de riz",
+            "vibration"
+        ],
+        "title": "🚨 Choléra",
+        "description": "Maladie diarrhéique aiguë très contagieuse.",
+        "advice": "Buvez du SRO immédiatement. Allez aux urgences sans attendre. Risque de déshydratation fatale.",
+        "emergency": true
+    },
+    {
+        "id": "avc",
+        "keywords": [
+            "avc",
+            "paralysie",
+            "bouche tordue",
+            "hémiplégie"
+        ],
+        "title": "🚨 AVC (Accident Vasculaire Cérébral)",
+        "description": "Urgence médicale absolue.",
+        "advice": "Appelez le 118 (Pompiers) ou le 8200 (SAMU) immédiatement. Notez l'heure des premiers signes.",
+        "emergency": true
+    },
+    {
+        "id": "hypertension",
+        "keywords": [
+            "tension",
+            "hta",
+            "hypertension",
+            "cœur"
+        ],
+        "title": "❤️ Hypertension Artérielle",
+        "description": "Pression artérielle trop élevée.",
+        "advice": "Réduisez le sel, faites du sport. Prenez votre traitement régulièrement si prescrit.",
+        "warning": "L'hypertension est le 'tueur silencieux'.",
+        "emergency": false
+    },
+    {
+        "id": "diabetes",
+        "keywords": [
+            "diabète",
+            "sucre",
+            "glycémie",
+            "insuline"
+        ],
+        "title": "🍬 Diabète",
+        "description": "Taux de sucre trop élevé dans le sang.",
+        "advice": "Suivez un régime pauvre en sucre. Contrôlez votre glycémie régulièrement.",
+        "emergency": false
+    },
+    {
+        "id": "asthma",
+        "keywords": [
+            "asthme",
+            "respiration",
+            "sifflement",
+            "ventoline"
+        ],
+        "title": "🫁 Asthme",
+        "description": "Maladie chronique des voies respiratoires.",
+        "advice": "Gardez toujours votre inhalateur (ventoline) sur vous. Évitez la poussière et les parfums forts.",
+        "emergency": false
+    },
+    {
+        "id": "dengue",
+        "keywords": [
+            "dengue",
+            "courbature forte"
+        ],
+        "title": "🦟 Dengue",
+        "description": "Fièvre virale transmise par les moustiques.",
+        "advice": "Hydratation et Paracétamol. Évitez l'Aspirine qui peut causer des hémorragies.",
+        "emergency": false
+    },
+    {
+        "id": "yellow_fever",
+        "keywords": [
+            "jaune",
+            "ictère",
+            "amarante"
+        ],
+        "title": "🟡 Fièvre Jaune",
+        "description": "Maladie virale grave.",
+        "advice": "La vaccination est le meilleur moyen de prévention. Consultez d'urgence si la peau jaunit.",
+        "emergency": true
+    },
+    {
+        "id": "tuberculosis",
+        "keywords": [
+            "tuberculose",
+            "toux sang",
+            "crachat"
+        ],
+        "title": "🫁 Tuberculose",
+        "description": "Infection pulmonaire contagieuse.",
+        "advice": "Si vous toussez depuis plus de 3 semaines, faites un test Expectoration. Le traitement est gratuit au Togo.",
+        "emergency": false
+    },
+    {
+        "id": "meningitis",
+        "keywords": [
+            "méningite",
+            "nuque raide",
+            "lumière"
+        ],
+        "title": "🧠 Méningite",
+        "description": "Infection des enveloppes du cerveau.",
+        "advice": "Urgence médicale. Fièvre + Raideur de nuque + Peur de la lumière = Hôpital immédiat.",
+        "emergency": true
+    },
+    {
+        "id": "hiv",
+        "keywords": [
+            "vih",
+            "sida",
+            "dépistage"
+        ],
+        "title": "🎗️ VIH / SIDA",
+        "description": "Virus de l'immunodéficience humaine.",
+        "advice": "Faites votre test de dépistage anonyme et gratuit. Avec le traitement ARV, on vit normalement.",
+        "emergency": false
+    },
+    {
+        "id": "hepatitis",
+        "keywords": [
+            "hépatite",
+            "foie"
+        ],
+        "title": "🩺 Hépatite",
+        "description": "Inflammation du foie (A, B, C, D ou E).",
+        "advice": "La vaccination contre l'hépatite B est recommandée. Évitez l'alcool.",
+        "emergency": false
+    },
+    {
+        "id": "epilepsy",
+        "keywords": [
+            "épilepsie",
+            "crise",
+            "convulsion"
+        ],
+        "title": "🧠 Épilepsie",
+        "description": "Trouble neurologique.",
+        "advice": "Pendant une crise : dégagez l'espace, ne mettez rien dans la bouche, mettez la personne sur le côté après la crise.",
+        "emergency": false
+    },
+    {
+        "id": "measles",
+        "keywords": [
+            "rougeole",
+            "boutons rouges",
+            "enfant"
+        ],
+        "title": "👶 Rougeole",
+        "description": "Maladie virale très contagieuse chez l'enfant.",
+        "advice": "Isolez l'enfant. Donnez de la Vitamine A et surveillez la fièvre. Vaccinez vos enfants !",
+        "emergency": false
+    },
+    {
+        "id": "tetanus",
+        "keywords": [
+            "tétanos",
+            "clou",
+            "ferraille",
+            "mâchoire serrée"
+        ],
+        "title": "💉 Tétanos",
+        "description": "Infection grave due à une plaie souillée.",
+        "advice": "Nettoyez la plaie et vérifiez votre vaccination (SAT). Si la mâchoire se serre, allez aux urgences.",
+        "emergency": true
+    },
+    {
+        "id": "lassa",
+        "keywords": [
+            "lassa",
+            "rat",
+            "rongeur"
+        ],
+        "title": "🚨 Fièvre de Lassa",
+        "description": "Fièvre hémorragique virale.",
+        "advice": "Consultez immédiatement. Évitez tout contact avec les fluides du malade. Stockez la nourriture hors de portée des rats.",
+        "emergency": true
+    },
+    {
+        "id": "ebola",
+        "keywords": [
+            "ebola",
+            "hémorragie"
+        ],
+        "title": "🚨 Ebola",
+        "description": "Virus hautement mortel.",
+        "advice": "Isolément strict. Contactez les autorités sanitaires immédiatement.",
+        "emergency": true
+    },
+    {
+        "id": "anemia",
+        "keywords": [
+            "anémie",
+            "pâle",
+            "manque de sang"
+        ],
+        "title": "🩸 Anémie",
+        "description": "Manque de fer ou de globules rouges.",
+        "advice": "Mangez des aliments riches en fer (viande rouge, épinards, foie). Consultez pour un traitement martial.",
+        "emergency": false
+    },
+    {
+        "id": "ulcer",
+        "keywords": [
+            "ulcère",
+            "brûlure estomac"
+        ],
+        "title": "🤢 Ulcère Gastrique",
+        "description": "Plaie dans la muqueuse de l'estomac.",
+        "advice": "Évitez le piment, le tabac et les anti-inflammatoires à jeun. Un test pour H. Pylori est conseillé.",
+        "emergency": false
+    },
+    {
+        "id": "appendicitis",
+        "keywords": [
+            "appendicite",
+            "douleur droite",
+            "ventre droit"
+        ],
+        "title": "🚨 Appendicite",
+        "description": "Inflammation de l'appendice.",
+        "advice": "Ne prenez pas d'anti-douleur. Allez aux urgences pour une échographie ou un avis chirurgical.",
+        "emergency": true
+    },
+    {
+        "id": "hemorrhoids",
+        "keywords": [
+            "hémorroïdes",
+            "anus",
+            "saignement selles"
+        ],
+        "title": "🚽 Hémorroïdes",
+        "description": "Veines dilatées près de l'anus.",
+        "advice": "Buvez beaucoup d'eau, mangez des fibres. Évitez de rester assis trop longtemps.",
+        "emergency": false
+    },
+    {
+        "id": "glaucoma",
+        "keywords": [
+            "glaucome",
+            "vue",
+            "œil"
+        ],
+        "title": "👁️ Glaucome",
+        "description": "Pression élevée dans l'œil.",
+        "advice": "Dépistage régulier chez l'ophtalmologue. Peut mener à la cécité si non traité.",
+        "emergency": false
+    },
+    {
+        "id": "cataract",
+        "keywords": [
+            "cataracte",
+            "vue floue"
+        ],
+        "title": "👁️ Cataracte",
+        "description": "Opacification du cristallin.",
+        "advice": "Le seul traitement efficace est la chirurgie, très courante et sûre.",
+        "emergency": false
+    },
+    {
+        "id": "depression",
+        "keywords": [
+            "dépression",
+            "triste",
+            "suicide",
+            "sommeil"
+        ],
+        "title": "🧠 Dépression",
+        "description": "Maladie mentale sérieuse.",
+        "advice": "Parlez-en à un proche ou à un médecin. Ce n'est pas une fatalité, des thérapies et traitements existent.",
+        "emergency": false
+    },
+    {
+        "id": "anxiety",
+        "keywords": [
+            "anxiété",
+            "stress",
+            "angoisse"
+        ],
+        "title": "🧠 Anxiété",
+        "description": "Trouble lié au sress excessif.",
+        "advice": "La méditation, le sport et la parole peuvent aider. Consultez un psychologue si cela vous empêche de vivre.",
+        "emergency": false
+    },
+    {
+        "id": "rabies",
+        "keywords": [
+            "rage",
+            "chien",
+            "morsure"
+        ],
+        "title": "🚨 Rage",
+        "description": "Virus transmis par morsure d'animal.",
+        "advice": "Lavez la plaie à l'eau et savon pendant 15 min. Allez immédiatement chercher le vaccin antirabique.",
+        "warning": "Une fois les symptômes apparus, la rage est 100% mortelle.",
+        "emergency": true
+    },
+    {
+        "id": "scabies",
+        "keywords": [
+            "gale",
+            "boutons gratte",
+            "nuit"
+        ],
+        "title": "🦠 Gale (Scabiose)",
+        "description": "Parasite de la peau très contagieux.",
+        "advice": "Traitez toute la famille en même temps. Lavez les draps à 60°C.",
+        "emergency": false
+    },
+    {
+        "id": "pneumonia",
+        "keywords": [
+            "pneumonie",
+            "infection poumon",
+            "essoufflé"
+        ],
+        "title": "🫁 Pneumonie",
+        "description": "Infection aiguë des poumons.",
+        "advice": "Consultez pour des antibiotiques. Risque de complication respiratoire.",
+        "emergency": true
+    },
+    {
+        "id": "rhume",
+        "keywords": [
+            "rhume",
+            "nez qui coule",
+            "éternuement"
+        ],
+        "title": "🤧 Rhume / Nasopharyngite",
+        "description": "Infection virale bénigne des voies respiratoires.",
+        "advice": "Lavage de nez au sérum physiologique, hydratation et repos.",
+        "emergency": false
+    },
+    {
+        "id": "grippe",
+        "keywords": [
+            "grippe",
+            "courbatures",
+            "frissons"
+        ],
+        "title": "🤧 Grippe Saisonnière",
+        "description": "Infection virale plus forte que le rhume.",
+        "advice": "Repos strict, Paracétamol. Les antibiotiques sont inutiles contre le virus.",
+        "emergency": false
+    },
+    {
+        "id": "covid",
+        "keywords": [
+            "covid",
+            "coronavirus",
+            "odorat",
+            "goût"
+        ],
+        "title": "🦠 COVID-19",
+        "description": "Infection au coronavirus.",
+        "advice": "Isolez-vous. Portez un masque. Surveillez votre oxygène si possible.",
+        "emergency": false
+    },
+    {
+        "id": "menopause",
+        "keywords": [
+            "ménopause",
+            "bouffées chaleur"
+        ],
+        "title": "🌸 Ménopause",
+        "description": "Arrêt naturel des cycles menstruels.",
+        "advice": "Adoptez une alimentation riche en calcium. Parlez à votre gynécologue des traitements hormonaux si besoin.",
+        "emergency": false
+    },
+    {
+        "id": "obesity",
+        "keywords": [
+            "obésité",
+            "poids",
+            "gras"
+        ],
+        "title": "⚖️ Obésité",
+        "description": "Excès de masse grasse nuisible à la santé.",
+        "advice": "Rééquilibrage alimentaire et activité physique régulière. Évitez les boissons sucrées.",
+        "emergency": false
+    },
+    {
+        "id": "sickle_cell",
+        "keywords": [
+            "drépanocytose",
+            "drépano",
+            "crise de douleur"
+        ],
+        "title": "🩸 Drépanocytose",
+        "description": "Maladie génétique du sang très présente au Togo.",
+        "advice": "Buvez beaucoup d'eau. Évitez le froid intense et l'altitude. Suivi médical régulier requis.",
+        "emergency": false
+    },
+    {
+        "id": "acne",
+        "keywords": [
+            "acné",
+            "bouton visage",
+            "puberté"
+        ],
+        "title": "🧼 Acné",
+        "description": "Inflammation des glandes de la peau.",
+        "advice": "Ne percez pas les boutons. Lavez au savon doux. Consultez un dermatologue pour un traitement adapté.",
+        "emergency": false
+    },
+    {
+        "id": "eczema",
+        "keywords": [
+            "eczéma",
+            "plaque rouge",
+            "gratte",
+            "atopique"
+        ],
+        "title": "🧴 Eczéma",
+        "description": "Inflammation de la peau (souvent allergique).",
+        "advice": "Hydratez la peau avec un émollient. Évitez les savons agressifs. Utilisez des dermocorticoïdes si prescrit.",
+        "emergency": false
+    },
+    {
+        "id": "psoriasis",
+        "keywords": [
+            "psoriasis",
+            "croûte blanche",
+            "squame"
+        ],
+        "title": "🧴 Psoriasis",
+        "description": "Maladie chronique auto-immune de la peau.",
+        "advice": "Évitez le stress et l'alcool. Exposition solaire modérée recommandée.",
+        "emergency": false
+    },
+    {
+        "id": "gastritis",
+        "keywords": [
+            "gastrite",
+            "brûlure"
+        ],
+        "title": "� Gastrite",
+        "description": "Inflammation de la paroi de l'estomac.",
+        "advice": "Fractionnez les repas. Évitez le tabac et les boissons gazeuses.",
+        "emergency": false
+    },
+    {
+        "id": "cystitis",
+        "keywords": [
+            "cystite",
+            "brûlure urine",
+            "envie pressante",
+            "pipi"
+        ],
+        "title": "🚽 Cystite (Infection urinaire)",
+        "description": "Infection de la vessie, très fréquente chez la femme.",
+        "advice": "Buvez 2L d'eau par jour. Urinez après les rapports sexuels. Consultez pour des antibiotiques.",
+        "emergency": false
+    },
+    {
+        "id": "prostate",
+        "keywords": [
+            "prostate",
+            "pipi difficile",
+            "homme âgé"
+        ],
+        "title": "👨‍🦳 Hypertrophie de la Prostate",
+        "description": "Augmentation du volume de la prostate.",
+        "advice": "Consultez un urologue si vous vous levez souvent la nuit. Un dépistage du PSA est conseillé après 50 ans.",
+        "emergency": false
+    },
+    {
+        "id": "alzheimer",
+        "keywords": [
+            "alzheimer",
+            "mémoire",
+            "oubli",
+            "vieux"
+        ],
+        "title": "🧠 Maladie d'Alzheimer",
+        "description": "Maladie neurodégénérative touchant la mémoire.",
+        "advice": "Maintenez une activité sociale et intellectuelle. Sécurisez l'environnement du malade.",
+        "emergency": false
+    },
+    {
+        "id": "parkinson",
+        "keywords": [
+            "parkinson",
+            "tremblement",
+            "lenteur"
+        ],
+        "title": "🧠 Maladie de Parkinson",
+        "description": "Maladie touchant le contrôle des mouvements.",
+        "advice": "La rééducation (kiné, orthophonie) est essentielle en complément du traitement médical.",
+        "emergency": false
+    },
+    {
+        "id": "insomnia",
+        "keywords": [
+            "insomnie",
+            "dort pas",
+            "sommeil"
+        ],
+        "title": "🌙 Insomnie",
+        "description": "Difficulté à s'endormir ou réveils nocturnes.",
+        "advice": "Évitez les écrans le soir. Gardez des horaires réguliers. Pas de caféine après 14h.",
+        "emergency": false
+    },
+    {
+        "id": "angina",
+        "keywords": [
+            "angine",
+            "mal de gorge",
+            "avaler"
+        ],
+        "title": "👄 Angine",
+        "description": "Infection de la gorge/amygdales.",
+        "advice": "Faites un test rapide en pharmacie pour savoir si c'est bactérien. Si oui, antibiotiques requis.",
+        "emergency": false
+    },
+    {
+        "id": "bronchitis",
+        "keywords": [
+            "bronchite",
+            "toux grasse"
+        ],
+        "title": "🫁 Bronchite",
+        "description": "Inflammation des bronches.",
+        "advice": "Hydratez-vous bien pour fluidifier les sécrétions. Ne prenez pas d'anti-tussif pour une toux grasse.",
+        "emergency": false
+    },
+    {
+        "id": "conjunctivitis",
+        "keywords": [
+            "conjonctivite",
+            "œil rouge",
+            "sale",
+            "Apollo"
+        ],
+        "title": "👁️ Conjonctivite (Apollo)",
+        "description": "Inflammation de l'œil très contagieuse.",
+        "advice": "Ne touchez pas vos yeux. Lavez-vous les mains souvent. Utilisez un collyre antiseptique.",
+        "emergency": false
+    },
+    {
+        "id": "otitis",
+        "keywords": [
+            "otite",
+            "mal d'oreille"
+        ],
+        "title": "� Otite",
+        "description": "Infection de l'oreille.",
+        "advice": "Ne mettez rien dans l'oreille (coton-tige). Consultez si la douleur persiste ou si du liquide s'écoule.",
+        "emergency": false
+    },
+    {
+        "id": "sinusitis",
+        "keywords": [
+            "sinusite",
+            "nez bouché",
+            "douleur visage"
+        ],
+        "title": "👃 Sinusite",
+        "description": "Inflammation des sinus.",
+        "advice": "Lavages de nez fréquents. Inhalations de vapeur d'eau chaude.",
+        "emergency": false
+    },
+    {
+        "id": "anorexia",
+        "keywords": [
+            "anorexie",
+            "mange pas",
+            "maigre"
+        ],
+        "title": "🧠 Anorexie Mentale",
+        "description": "Trouble alimentaire grave.",
+        "advice": "Une prise en charge pluridisciplinaire (médecin, psy, nutritionniste) est indispensable.",
+        "emergency": false
+    },
+    {
+        "id": "bulimia",
+        "keywords": [
+            "boulimie",
+            "crise manger",
+            "vomir"
+        ],
+        "title": "🧠 Boulimie",
+        "description": "Trouble alimentaire avec perte de contrôle.",
+        "advice": "N'ayez pas honte, c'est une maladie qui se soigne avec de l'aide professionnelle.",
+        "emergency": false
+    },
+    {
+        "id": "burnout",
+        "keywords": [
+            "burnout",
+            "épuisement professionnel",
+            "travail"
+        ],
+        "title": "😫 Épuisement (Burn-out)",
+        "description": "État fatigue extrême lié au travail.",
+        "advice": "Arrêt de travail nécessaire. Reposez-vous et redéfinissez vos priorités.",
+        "emergency": false
+    },
+    {
+        "id": "sciatica",
+        "keywords": [
+            "sciatique",
+            "mal dos",
+            "jambe"
+        ],
+        "title": "🦴 Sciatique",
+        "description": "Compression du nerf sciatique.",
+        "advice": "Évitez le repos strict au lit. Marchez un peu. Paracétamol ou Anti-inflammatoires.",
+        "emergency": false
+    },
+    {
+        "id": "hernia",
+        "keywords": [
+            "hernie",
+            "bosse ventre",
+            "bosse aine"
+        ],
+        "title": "🩺 Hernie",
+        "description": "Sortie d'un organe hors de sa cavité.",
+        "advice": "Si la hernie devient douloureuse, dure et ne rentre plus : c'est une URGENCES CHIRURGICALE.",
+        "emergency": false
+    },
+    {
+        "id": "varicose",
+        "keywords": [
+            "varices",
+            "jambes lourdes"
+        ],
+        "title": "🦵 Varices",
+        "description": "Dilatation des veines des jambes.",
+        "advice": "Portez des bas de contention. Relevez les pieds du lit.",
+        "emergency": false
+    }
+]

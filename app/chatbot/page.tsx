@@ -26,176 +26,49 @@ export default function ChatbotPage() {
         scrollToBottom()
     }, [messages])
 
+    const [diseasesData, setDiseasesData] = useState<any[]>([])
+
+    // Charger les connaissances médicales
+    useEffect(() => {
+        fetch('/api/diseases')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) setDiseasesData(data.data)
+            })
+            .catch(err => console.error('Erreur chargement maladies:', err))
+    }, [])
+
     const generateResponse = (userMessage: string): string => {
         const lowerMessage = userMessage.toLowerCase()
 
-        // --- URGENCES VITALES (Priorité absolue) ---
+        // 1. Recherche dans la base de données de maladies
+        const match = diseasesData.find(disease =>
+            disease.keywords.some((kw: string) => lowerMessage.includes(kw.toLowerCase()))
+        )
 
-        // AVC
-        if (lowerMessage.includes('avc') || (lowerMessage.includes('visage') && lowerMessage.includes('paralysé')) || (lowerMessage.includes('parler') && lowerMessage.includes('impossible'))) {
-            return `🚨 SUSPICION D'AVC - AGISSEZ VITE (VITE) !
-            
-⚠️ Appelez immédiatement le SAMU (8200) ou les Pompiers (118).
+        if (match) {
+            let response = `${match.title}\n\n${match.description}\n\n`
 
-Signes d'alerte (VITE) :
-- **V**isage paralysé (une lèvre tombe ?)
-- **I**nertie d'un membre (bras ou jambe qui ne bouge plus ?)
-- **T**rouble de la parole (difficulté à parler ?)
-- **E**n urgence, appelez le 118 !
+            if (match.advice) response += `✅ **Conseils :**\n${match.advice}\n\n`
+            if (match.symptoms) response += `📝 **Symptômes :**\n${match.symptoms.map((s: string) => `- ${s}`).join('\n')}\n\n`
+            if (match.warning) response += `⚠️ **Attention :**\n${match.warning}\n\n`
 
-Ne donnez rien à manger ni à boire. Allongez la personne en attendant les secours.`
-        }
-
-        // --- MALADIES COURANTES AU TOGO ---
-
-        // Paludisme (Malaria) - Très complet car critique
-        if (lowerMessage.includes('palu') || lowerMessage.includes('malaria') || (lowerMessage.includes('fièvre') && lowerMessage.includes('frisson'))) {
-            return `🦟 **Suspicion de Paludisme**
-
-Le paludisme est la première cause de consultation au Togo. C'est une urgence.
-
-**Symptômes fréquents :**
-- Fièvre élevée (> 38°C) par accès
-- Frissons intenses et sueurs
-- Maux de tête et courbatures
-- Nausées ou vomissements
-- Fatigue extrême
-
-**🚑 ACTION IMMÉDIATE :**
-1. **Ne prenez pas de médicaments au hasard.**
-2. Rendez-vous au centre de santé le plus proche pour un **TDR (Test Rapide)** ou une Goutte Épaisse.
-3. Si le test est positif, suivez le traitement (Artémisinine) prescrit jusqu'au bout.
-
-**⚠️ DANGER :**
-Chez l'enfant ou la femme enceinte, le paludisme tue rapidement. Consultez dès les premiers signes de fièvre.`
-        }
-
-        // Typhoïde
-        if (lowerMessage.includes('typho') || (lowerMessage.includes('fièvre') && lowerMessage.includes('ventre') && lowerMessage.includes('dure'))) {
-            return `🦠 **Fièvre Typhoïde ?**
-
-Si vous avez une fièvre qui dure depuis plusieurs jours avec des maux de ventre, cela peut être la typhoïde.
-
-**Signes :**
-- Fièvre qui monte progressivement (en "plateau")
-- Maux de tête intenses
-- Douleurs abdominales, diarrhée ou constipation
-- Fatigue extrême (tuphos)
-
-**Conseil :**
-Consultez un médecin pour une analyse de sang (Widal) et de selles. Ne vous soignez pas seul, des antibiotiques spécifiques sont nécessaires.`
-        }
-
-        // Choléra (Diarrhée eau de riz)
-        if (lowerMessage.includes('choléra') || (lowerMessage.includes('diarrhée') && lowerMessage.includes('eau') && lowerMessage.includes('riz'))) {
-            return `🚨 **ALERTE CHOLÉRA / DIARRHÉE SÉVÈRE**
-
-Si vous avez des diarrhées très liquides (comme de l'eau de riz) et abondantes :
-
-1. **URGENCE : Risque de décès par déshydratation en quelques heures.**
-2. Buvez immédiatement et continuellement (SRO - Sels de Réhydratation Orale, ou eau + sucre + sel).
-3. Rendez-vous immédiatement à l'hôpital.
-4. Isolez le malade et lavez-vous les mains à l'eau de javel diluée.`
-        }
-
-        // --- SYMPTÔMES COURANTS ---
-
-        // Maux de tête
-        if (lowerMessage.includes('tête') || lowerMessage.includes('migraine')) {
-            return `� **Maux de tête / Migraine**
-
-**Pour soulager :**
-1. Repos au calme et dans le noir.
-2. Hydratation (buvez 2 verres d'eau).
-3. Paracétamol (Doliprane/Efferalgan) : 500mg ou 1g (selon poids).
-
-**⚠️ Consultez si :**
-- "Le pire mal de tête de votre vie" (soudain)
-- Raideur de la nuque + Fièvre (Méningite ?)
-- Après un choc à la tête`
-        }
-
-        // Fièvre (Distinction Enfant/Adulte)
-        if (lowerMessage.includes('fièvre') || lowerMessage.includes('chaud')) {
-            if (lowerMessage.includes('bébé') || lowerMessage.includes('enfant')) {
-                return `👶 **Fièvre chez l'enfant**
-
-1. **Découvrez l'enfant** (body ou couche simple).
-2. **Faites-le boire** souvent (eau ou SRO).
-3. **Paracétamol** : Dose poids toutes les 6h.
-4. **Bain** : 2°C en dessous de sa température (tiède, jamais froid).
-
-**🏥 HOPITAL IMMÉDIAT SI :**
-- Bébé de moins de 3 mois
-- Convulsions
-- Taches sur la peau
-- Enfant mou qui ne réagit pas`
+            if (match.emergency) {
+                response += `🚨 **URGENCE : Appelez immédiatement le 118 (Pompiers) ou le 8200 (SAMU).**`
             }
-            return `🌡️ **Fièvre Adulte**
 
-- Repos et hydratation maximum.
-- Paracétamol 1g toutes les 6h si besoin.
-- Surveillez l'apparition d'autres signes (toux, brûlures urinaires, maux de ventre) pour identifier la cause (Palu ? Grippe ? Infection ?).
-
-Si la fièvre dépasse 48h, consultez un médecin.`
+            return response
         }
 
-        // Maux de ventre
-        if (lowerMessage.includes('ventre') || lowerMessage.includes('estomac')) {
-            if (lowerMessage.includes('règle') || lowerMessage.includes('menstru')) {
-                return `🌸 **Douleurs menstruelles**
-                
-- Chaleur sur le ventre (bouillotte).
-- Antispasmodique (Spasfon) + Ibuprofène.
-- Repos.`
-            }
-            return `🤢 **Maux de ventre**
-
-- **Brûlures (estomac) ?** Anti-acide (Maalox, Gaviscon). Évitez piment/café.
-- **Crampes + Diarrhée ?** SRO + Smecta. Mangez du riz/banane.
-- **Douleur bas droite + Fièvre ?** Possible Appendicite -> Urgences.
-
-Si la douleur est insupportable, contactez un médecin.`
+        // 2. Gestion des salutations
+        if (lowerMessage.includes('bonjour') || lowerMessage.includes('salut') || lowerMessage.includes('hello')) {
+            return `Bonjour ! Comment puis-je vous aider aujourd'hui ? Vous pouvez me parler de vos symptômes ou me demander des conseils de santé.`
         }
 
-        // Rhume / Grippe
-        if (lowerMessage.includes('rhume') || lowerMessage.includes('nez') || lowerMessage.includes('grippe') || lowerMessage.includes('courbature')) {
-            return `🤧 **Syndrome Grippal / Rhume**
-
-C'est probablement viral. Les antibiotiques sont inutiles.
-
-**Traitement :**
-- Lavage de nez (sérum phy ou eau de mer).
-- Paracétamol pour la fièvre/douleurs.
-- Repos et Vitamine C (Oranges, Citrons).
-- Miel pour la gorge.
-
-Consultez si vous avez du mal à respirer.`
-        }
-
-        // --- QUESTIONS PRATIQUES ---
-
-        // Pharmacies de garde
-        if (lowerMessage.includes('garde') || lowerMessage.includes('ouverte') || lowerMessage.includes('nuit')) {
-            return `🌙 **Pharmacies de Garde**
-
-Vous pouvez voir les pharmacies de garde directement sur la **page d'accueil** d'ALAFIA.
-Elles sont indiquées par un badge vert "DE GARDE".
-
-Voulez-vous que je vous donne le lien vers la liste ?`
-        }
-
-        // --- DÉFAUT ---
-        return `Je suis un assistant médical intelligent, mais je ne suis pas un docteur.
-
-Je peux vous aider sur :
-- 🦟 Le Paludisme
-- 🌡️ La Fièvre (Enfant/Adulte)
-- 🤕 Les migraines
-- 🤰 La grossesse
-- 📍 Les pharmacies de garde
-
-Décrivez simplement ce que vous ressentez (exemple : *"J'ai de la fièvre et je tremble"*).
+        // 3. Défaut
+        return `Je ne suis pas sûr de comprendre votre demande spécifique. Je suis un assistant santé formé pour vous aider avec les maladies courantes au Togo et les premiers soins.
+        
+Pouvez-vous décrire vos symptômes ? (Exemple : "J'ai mal à la gorge", "fièvre", "paludisme", etc.)
 
 *En cas d'urgence vitale, appelez le 118 ou le 8200.*`
     }
@@ -291,9 +164,14 @@ Décrivez simplement ce que vous ressentez (exemple : *"J'ai de la fièvre et je
                                         : 'bg-white border border-border'
                                         }`}
                                 >
-                                    <p className="whitespace-pre-line text-sm leading-relaxed">
-                                        {message.content}
-                                    </p>
+                                    <div className="text-sm leading-relaxed whitespace-pre-line">
+                                        {message.content.split(/(\*\*.*?\*\*)/).map((part, i) => {
+                                            if (part.startsWith('**') && part.endsWith('**')) {
+                                                return <strong key={i} className="font-bold">{part.slice(2, -2)}</strong>
+                                            }
+                                            return part
+                                        })}
+                                    </div>
                                     <p
                                         className={`text-xs mt-2 ${message.role === 'user' ? 'text-white/70' : 'text-muted-foreground'
                                             }`}
