@@ -15,7 +15,6 @@ export async function POST(req: Request) {
       });
     }
 
-    // Charger le contexte local (diseases.json)
     const jsonDirectory = path.join(process.cwd(), 'data');
     const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
     const diseases = JSON.parse(fileContents);
@@ -23,15 +22,12 @@ export async function POST(req: Request) {
 
     const systemMessage = {
       role: "system",
-      content: `Tu es ALAFIA, un assistant médical spécialisé au Togo. 
-            Utilise ces connaissances locales : ${diseasesContext}. 
-            Urgence : 118 ou 8200. Ton bienveillant, réponds en Markdown.`
+      content: `Tu es ALAFIA, assistant médical au Togo. Urgence : 118 ou 8200. Connaissances : ${diseasesContext}. Réponds brièvement en Markdown. Pas de diagnostic médical.`
     };
 
-    // On formate les messages pour l'API de Chat (OpenAI compatible)
     const chatMessages = [systemMessage, ...messages];
 
-    // APPEL AU NOUVEAU ROUTER HUGGING FACE (Point d'accès moderne)
+    // Utilisation de Phi-3-mini, qui est officiellement supporté par le Chat Router de HF
     const response = await fetch(
       "https://router.huggingface.co/v1/chat/completions",
       {
@@ -41,23 +37,26 @@ export async function POST(req: Request) {
         },
         method: "POST",
         body: JSON.stringify({
-          model: "mistralai/Mistral-7B-Instruct-v0.3", // Modèle certifié compatible Chat
+          model: "microsoft/Phi-3-mini-4k-instruct",
           messages: chatMessages,
           max_tokens: 500,
-          stream: false
         }),
       }
     );
 
     const result = await response.json();
 
-    // Gestion des erreurs
     if (response.status !== 200) {
-      console.error("HF Router Error:", result);
-      let msg = "Désolé, l'IA est temporairement indisponible.";
-      if (response.status === 403) msg = "⚠️ Erreur de permissions : Assurez-vous d'utiliser un token 'Write' avec les droits 'Inference'.";
-      if (result.error && typeof result.error === 'string') msg = `Erreur : ${result.error}`;
-      return NextResponse.json({ messages: [{ role: 'assistant', content: msg }] });
+      console.error("HF Router Error Details:", result);
+      let userMsg = "Désolé, l'IA est temporairement indisponible.";
+
+      if (response.status === 403) {
+        userMsg = "⚠️ Erreur 403 : Votre clé API n'a pas les droits nécessaires. Créez un token 'Write' sur Hugging Face.";
+      } else if (result.error?.message) {
+        userMsg = `Note technique : ${result.error.message}`;
+      }
+
+      return NextResponse.json({ messages: [{ role: 'assistant', content: userMsg }] });
     }
 
     const aiContent = result.choices?.[0]?.message?.content;
@@ -65,14 +64,14 @@ export async function POST(req: Request) {
     return NextResponse.json({
       messages: [{
         role: 'assistant',
-        content: aiContent || "Je n'ai pas pu générer de réponse."
+        content: aiContent || "Je n'ai pas pu obtenir de réponse claire."
       }]
     });
 
   } catch (error: any) {
     console.error("Chat API Error:", error);
     return NextResponse.json({
-      messages: [{ role: 'assistant', content: "Désolé, une erreur technique est survenue." }]
+      messages: [{ role: 'assistant', content: "Une erreur technique est survenue." }]
     });
   }
 }
