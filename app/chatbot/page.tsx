@@ -1,13 +1,12 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react'
-import { useChat } from '@ai-sdk/react'
+import { useChat } from 'ai/react'
 import Navbar from '@/components/Navbar'
 import { Send, Bot, User, Loader2, AlertCircle } from 'lucide-react'
 
 export default function ChatbotPage() {
-    const [input, setInput] = useState('')
-    const { messages, append, isLoading } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         api: '/api/chat',
         initialMessages: [
             {
@@ -17,23 +16,6 @@ export default function ChatbotPage() {
             },
         ],
     })
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setInput(e.target.value)
-    }
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!input.trim() || isLoading) return
-
-        const content = input
-        setInput('')
-
-        await append({
-            role: 'user',
-            content,
-        })
-    }
 
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
