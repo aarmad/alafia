@@ -2,18 +2,26 @@ import { streamText } from 'ai';
 import { huggingface } from '@ai-sdk/huggingface';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { NextResponse } from 'next/server';
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-    const { messages } = await req.json();
+  const { messages } = await req.json();
 
-    // Charger les données locales pour le contexte
-    const jsonDirectory = path.join(process.cwd(), 'data');
-    const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
-    const diseases = JSON.parse(fileContents);
+  if (!process.env.HUGGING_FACE_API_KEY) {
+    return NextResponse.json({
+      error: "La clé API Hugging Face (HUGGING_FACE_API_KEY) n'est pas configurée dans les variables d'environnement. Veuillez l'ajouter pour activer l'IA.",
+      success: false
+    }, { status: 500 });
+  }
 
-    const systemPrompt = `Tu es ALAFIA, un assistant médical intelligent spécialisé dans le contexte de santé au Togo. 
+  // Charger les données locales pour le contexte
+  const jsonDirectory = path.join(process.cwd(), 'data');
+  const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
+  const diseases = JSON.parse(fileContents);
+
+  const systemPrompt = `Tu es ALAFIA, un assistant médical intelligent spécialisé dans le contexte de santé au Togo. 
   Utilise les informations suivantes sur les maladies courantes pour donner des conseils précis : ${JSON.stringify(diseases)}.
   
   Règles importantes :
@@ -23,11 +31,11 @@ export async function POST(req: Request) {
   4. Adapte tes conseils au climat et à l'environnement du Togo.
   5. Réponds en utilisant du formatage Markdown pour la clarté.`;
 
-    const result = streamText({
-        model: huggingface('mistralai/Mistral-7B-Instruct-v0.3'),
-        system: systemPrompt,
-        messages,
-    });
+  const result = await streamText({
+    model: huggingface('mistralai/Mistral-7B-Instruct-v0.3') as any,
+    system: systemPrompt,
+    messages,
+  });
 
-    return result.toDataStreamResponse();
+  return result.toDataStreamResponse();
 }

@@ -1,13 +1,13 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useChat } from 'ai/react'
 import Navbar from '@/components/Navbar'
 import { Send, Bot, User, Loader2, AlertCircle } from 'lucide-react'
-import type { ChatMessage } from '@/types' // This type might need adjustment or removal if useChat's type is sufficient
 
 export default function ChatbotPage() {
-    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    const [input, setInput] = useState('')
+    const { messages, append, isLoading } = useChat({
         api: '/api/chat',
         initialMessages: [
             {
@@ -17,6 +17,23 @@ export default function ChatbotPage() {
             },
         ],
     })
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setInput(e.target.value)
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!input.trim() || isLoading) return
+
+        const content = input
+        setInput('')
+
+        await append({
+            role: 'user',
+            content,
+        })
+    }
 
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -68,7 +85,7 @@ export default function ChatbotPage() {
 
                     {/* Messages */}
                     <div className="flex-1 overflow-y-auto mb-4 space-y-4 bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-border">
-                        {messages.map((message) => (
+                        {messages.map((message: any) => (
                             <div
                                 key={message.id}
                                 className={`flex items-start space-x-3 animate-fade-in ${message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''
@@ -93,7 +110,7 @@ export default function ChatbotPage() {
                                         }`}
                                 >
                                     <div className="text-sm leading-relaxed whitespace-pre-line prose prose-sm max-w-none">
-                                        {message.content.split(/(\*\*.*?\*\*)/).map((part, i) => {
+                                        {message.content.split(/(\*\*.*?\*\*)/).map((part: string, i: number) => {
                                             if (part.startsWith('**') && part.endsWith('**')) {
                                                 return <strong key={i} className="font-bold">{part.slice(2, -2)}</strong>
                                             }
