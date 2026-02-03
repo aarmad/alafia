@@ -56,10 +56,12 @@
 - **Tailwind CSS** - Styling moderne et responsive
 - **Lucide React** - Icônes modernes
 
-### Backend (À implémenter)
-- **Node.js + Express** - API REST
-- **MongoDB** - Base de données NoSQL
+### Backend
+- **Next.js API Routes** - Backend intégré avec App Router
+- **MongoDB Atlas** - Base de données NoSQL hébergée
 - **JWT** - Authentification sécurisée
+- **bcryptjs** - Hachage robuste des mots de passe
+- **Mongoose** - Modélisation des données
 
 ### Déploiement
 - **Netlify** - Hébergement et CI/CD
@@ -159,28 +161,15 @@ L'application est entièrement responsive et optimisée pour :
 
 ## 🚧 Prochaines Étapes
 
-### Backend
-- [ ] Implémenter l'API REST avec Express
-- [ ] Configurer MongoDB
-- [ ] Système d'authentification JWT
-- [ ] API de gestion des pharmacies
-- [ ] API de gestion des profils utilisateurs
+## 🚧 Prochaines Étapes
 
-### Fonctionnalités
-- [ ] Notifications push (via service workers)
-- [ ] Mode hors-ligne (PWA)
-- [ ] Système de rappels automatiques
-- [ ] Intégration d'une vraie IA (Ollama, LLaMA)
-- [ ] Carte interactive des pharmacies
-- [ ] Système de notation des pharmacies
-- [ ] Chat en temps réel avec les pharmacies
-
-### Améliorations
-- [ ] Tests unitaires et d'intégration
-- [ ] Documentation API (Swagger)
-- [ ] Tableau de bord admin
-- [ ] Analytics et statistiques
-- [ ] Multi-langues (Français, Ewe, Mina)
+### Fonctionnalités à venir
+- [ ] **Notifications push** (via service workers) pour les rappels de médicaments.
+- [ ] **Mode hors-ligne (PWA)** pour consulter les pharmacies sans connexion.
+- [ ] **Carte interactive** (Leaflet/Mapbox) pour visualiser les pharmacies.
+- [ ] **Multi-langues** : intégration de l'Ewe et du Mina.
+- [ ] **Chatbot IA avancé** : intégration d'un modèle LLM pour des conseils plus poussés.
+- [ ] **Tests automatisés** : tests unitaires et E2E.
 
 ## 📄 Licence
 

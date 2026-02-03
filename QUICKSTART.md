@@ -18,6 +18,15 @@ npm run dev
 http://localhost:3000
 ```
 
+### 4️⃣ Configuration des Variables d'Environnement
+Pour que le backend fonctionne, créez un fichier `.env` à la racine :
+```bash
+MONGODB_URI=votre_uri_mongodb_atlas
+JWT_SECRET=une_cle_secrete_aleatoire
+```
+
+---
+
 ## ✅ C'est tout !
 
 L'application est maintenant accessible et fonctionnelle.

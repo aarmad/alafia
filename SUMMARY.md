@@ -95,12 +95,15 @@
 - **TypeScript** - Typage statique
 - **Tailwind CSS** - Styling utility-first
 - **Lucide React** - Icônes modernes
+- **Radix UI** - Composants accessibles (Modales)
+- **Sonner** - Notifications Toasts
 
-#### Backend (Architecture prête)
-- **Node.js + Express** - API REST
-- **MongoDB** - Base de données NoSQL
-- **JWT** - Authentification
+#### Backend (100% Fonctionnel)
+- **Next.js API Routes** - API REST
+- **MongoDB Atlas** - Base de données NoSQL
+- **JWT** - Authentification sécurisée
 - **bcryptjs** - Hachage mots de passe
+- **Lazy Initialization** - Stabilité du build
 
 ### 📁 Structure du Projet
 
