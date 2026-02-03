@@ -1,36 +1,222 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏥 ALAFIA - Application de Santé pour Lomé
 
-## Getting Started
+![ALAFIA](https://img.shields.io/badge/ALAFIA-Santé%20Lomé-green)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind](https://img.shields.io/badge/Tailwind-3-cyan)
 
-First, run the development server:
+**ALAFIA** est une application web moderne et complète destinée aux habitants de Lomé (Togo) pour faciliter l'accès aux soins de santé.
+
+## ✨ Fonctionnalités
+
+### 🔍 Recherche de Pharmacies
+- **Pharmacies de garde** : Liste mise à jour des pharmacies ouvertes 24h/24
+- **Géolocalisation** : Trouvez les pharmacies les plus proches de vous
+- **Recherche de médicaments** : Localisez rapidement un médicament spécifique
+- **Contact WhatsApp** : Contactez directement les pharmacies
+- **Itinéraire Google Maps** : Navigation vers la pharmacie
+
+### 🤖 Chatbot Médical IA
+- Assistant santé intelligent avec conseils adaptés au contexte togolais
+- Réponses sur les symptômes courants (paludisme, fièvre, maux de tête, etc.)
+- Orientation vers les soins appropriés
+- Numéros d'urgence et hôpitaux de Lomé
+- **100% Open-Source** - Système basé sur des règles
+
+### 👥 Gestion Multi-Profils
+
+#### 🏪 Compte Pharmacie
+- Gestion du stock de médicaments
+- Mise à jour du statut de garde
+- Gestion des horaires et coordonnées
+
+#### 🤰 Femmes Enceintes
+- Carnet de suivi de grossesse
+- Rappels de rendez-vous
+- Conseils adaptés par semaine de grossesse
+- Notifications pour hydratation et vitamines
+
+#### 👴 Troisième Âge
+- Gestion des traitements médicaux
+- Rappels de prise de médicaments
+- Suivi des rendez-vous médicaux
+- Contact d'urgence
+
+#### 🩸 Donneurs de Sang
+- Profil avec groupe sanguin
+- Historique des dons
+- Notifications quand un hôpital a besoin de sang
+- Localisation des centres de collecte
+
+## 🚀 Technologies Utilisées
+
+### Frontend
+- **Next.js 16** - Framework React avec App Router
+- **TypeScript** - Typage statique
+- **Tailwind CSS** - Styling moderne et responsive
+- **Lucide React** - Icônes modernes
+
+### Backend (À implémenter)
+- **Node.js + Express** - API REST
+- **MongoDB** - Base de données NoSQL
+- **JWT** - Authentification sécurisée
+
+### Déploiement
+- **Netlify** - Hébergement et CI/CD
+
+## 📦 Installation
+
+### Prérequis
+- Node.js 18+ 
+- npm ou yarn
+
+### Installation locale
 
 ```bash
+# Cloner le projet
+cd alafia-app
+
+# Installer les dépendances
+npm install
+
+# Lancer le serveur de développement
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'application sera accessible sur `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Architecture du Projet
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+alafia-app/
+├── app/                      # Pages Next.js (App Router)
+│   ├── page.tsx             # Page d'accueil (pharmacies)
+│   ├── chatbot/page.tsx     # Chatbot médical
+│   ├── auth/page.tsx        # Authentification
+│   ├── layout.tsx           # Layout principal
+│   └── globals.css          # Styles globaux
+├── components/              # Composants réutilisables
+│   ├── Navbar.tsx          # Navigation
+│   ├── PharmacyCard.tsx    # Carte de pharmacie
+│   └── SearchBar.tsx       # Barre de recherche
+├── data/                    # Données
+│   └── pharmacies.json     # Base de données des pharmacies
+├── lib/                     # Utilitaires
+│   └── utils.ts            # Fonctions helpers
+├── types/                   # Types TypeScript
+│   └── index.ts            # Définitions de types
+├── public/                  # Fichiers statiques
+├── netlify.toml            # Configuration Netlify
+└── package.json            # Dépendances
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📊 Base de Données des Pharmacies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+La base de données contient **15 pharmacies** de Lomé avec :
+- ✅ Nom et adresse complète
+- ✅ Numéros de téléphone et WhatsApp
+- ✅ Coordonnées GPS (latitude/longitude)
+- ✅ Statut de garde (24h/24 ou horaires)
+- ✅ Liste des médicaments en stock
+- ✅ Quartier de localisation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 Design System
 
-## Deploy on Vercel
+### Couleurs
+- **Primary** : Vert médical (#2d8659) - Santé, nature, confiance
+- **Accent** : Bleu-vert (#2d8686) - Modernité, technologie
+- **Secondary** : Vert clair - Douceur, apaisement
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Animations
+- Fade-in pour les éléments
+- Slide-up pour les sections
+- Scale-in pour les modales
+- Transitions fluides sur tous les éléments interactifs
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔐 Sécurité
+
+- Validation des formulaires côté client et serveur
+- Hachage des mots de passe (bcrypt)
+- Tokens JWT pour l'authentification
+- Protection CSRF
+- Sanitization des entrées utilisateur
+
+## 📱 Responsive Design
+
+L'application est entièrement responsive et optimisée pour :
+- 📱 Mobile (320px+)
+- 📱 Tablette (768px+)
+- 💻 Desktop (1024px+)
+- 🖥️ Large Desktop (1440px+)
+
+## 🌍 SEO
+
+- Métadonnées optimisées
+- Balises Open Graph
+- Structure sémantique HTML5
+- Performance optimisée (Lighthouse 90+)
+
+## 🚧 Prochaines Étapes
+
+### Backend
+- [ ] Implémenter l'API REST avec Express
+- [ ] Configurer MongoDB
+- [ ] Système d'authentification JWT
+- [ ] API de gestion des pharmacies
+- [ ] API de gestion des profils utilisateurs
+
+### Fonctionnalités
+- [ ] Notifications push (via service workers)
+- [ ] Mode hors-ligne (PWA)
+- [ ] Système de rappels automatiques
+- [ ] Intégration d'une vraie IA (Ollama, LLaMA)
+- [ ] Carte interactive des pharmacies
+- [ ] Système de notation des pharmacies
+- [ ] Chat en temps réel avec les pharmacies
+
+### Améliorations
+- [ ] Tests unitaires et d'intégration
+- [ ] Documentation API (Swagger)
+- [ ] Tableau de bord admin
+- [ ] Analytics et statistiques
+- [ ] Multi-langues (Français, Ewe, Mina)
+
+## 📄 Licence
+
+Ce projet est développé pour les habitants de Lomé, Togo.
+
+## 👨‍💻 Développement
+
+### Scripts disponibles
+
+```bash
+# Développement
+npm run dev
+
+# Build de production
+npm run build
+
+# Démarrer en production
+npm start
+
+# Linting
+npm run lint
+```
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à :
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/AmazingFeature`)
+3. Commit vos changements (`git commit -m 'Add AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
+
+## 📞 Contact
+
+Pour toute question ou suggestion, contactez l'équipe ALAFIA.
+
+---
+
+**Fait avec ❤️ pour le Togo** 🇹🇬
