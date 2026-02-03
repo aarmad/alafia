@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     const chatMessages = [systemMessage, ...messages];
 
-    // Utilisation de Phi-3-mini, qui est officiellement supporté par le Chat Router de HF
+    // Tentative avec Llama 3 - Le modèle le plus stable sur le Router HF
     const response = await fetch(
       "https://router.huggingface.co/v1/chat/completions",
       {
@@ -37,26 +37,40 @@ export async function POST(req: Request) {
         },
         method: "POST",
         body: JSON.stringify({
-          model: "microsoft/Phi-3-mini-4k-instruct",
+          model: "meta-llama/Llama-3.1-8B-Instruct", // Modèle standard et robuste
           messages: chatMessages,
           max_tokens: 500,
         }),
       }
     );
 
-    const result = await response.json();
+    let result = await response.json();
 
+    // Si le modèle principal échoue, on tente un modèle de secours
     if (response.status !== 200) {
-      console.error("HF Router Error Details:", result);
-      let userMsg = "Désolé, l'IA est temporairement indisponible.";
+      console.warn("Tentative de secours suite à erreur:", result.error?.message);
 
-      if (response.status === 403) {
-        userMsg = "⚠️ Erreur 403 : Votre clé API n'a pas les droits nécessaires. Créez un token 'Write' sur Hugging Face.";
-      } else if (result.error?.message) {
-        userMsg = `Note technique : ${result.error.message}`;
+      const fallbackResponse = await fetch(
+        "https://router.huggingface.co/v1/chat/completions",
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({
+            model: "mistralai/Mistral-7B-Instruct-v0.2",
+            messages: chatMessages,
+            max_tokens: 500,
+          }),
+        }
+      );
+
+      result = await fallbackResponse.json();
+
+      if (fallbackResponse.status !== 200) {
+        throw new Error(result.error?.message || "Tous les modèles sont indisponibles.");
       }
-
-      return NextResponse.json({ messages: [{ role: 'assistant', content: userMsg }] });
     }
 
     const aiContent = result.choices?.[0]?.message?.content;
@@ -64,14 +78,20 @@ export async function POST(req: Request) {
     return NextResponse.json({
       messages: [{
         role: 'assistant',
-        content: aiContent || "Je n'ai pas pu obtenir de réponse claire."
+        content: aiContent || "Je n'ai pas pu obtenir de réponse."
       }]
     });
 
   } catch (error: any) {
     console.error("Chat API Error:", error);
+
+    let msg = "Désolé, les serveurs d'IA sont surchargés. Réessayez dans quelques secondes.";
+    if (error.message.includes('permission') || error.message.includes('403')) {
+      msg = "⚠️ Problème de clé API : Assurez-vous d'utiliser un token 'Write' sur Hugging Face.";
+    }
+
     return NextResponse.json({
-      messages: [{ role: 'assistant', content: "Une erreur technique est survenue." }]
+      messages: [{ role: 'assistant', content: msg }]
     });
   }
 }
