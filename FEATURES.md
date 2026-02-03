@@ -96,51 +96,33 @@
   - [x] Adresse complète
   - [x] Téléphone
   - [x] Quartier
-- [ ] Gestion du stock (interface à créer)
-- [ ] Indication du statut de garde (interface à créer)
-- [ ] Mise à jour des horaires (interface à créer)
-- [ ] Numéro WhatsApp (déjà dans le formulaire)
+- [x] Gestion du stock (interface complète avec prix/qté)
+- [x] Indication du statut de garde (switch interactif)
+- [x] Mise à jour des horaires (input dédié)
+- [x] Numéro WhatsApp (déjà dans le formulaire)
 
 #### 🟢 Comptes Particuliers
 
 ##### 1. Femmes enceintes
 - [x] Sélection du profil "Femme Enceinte"
-- [x] Formulaire avec :
-  - [x] Email et mot de passe
-  - [x] Nom complet
-  - [x] Téléphone
-  - [x] Date prévue d'accouchement
-  - [x] Semaines de grossesse
-- [ ] Carnet de suivi de grossesse (interface à créer)
+- [x] Formulaire complet
+- [x] Carnet de suivi de grossesse (barre de progression interactive)
 - [ ] Rappels de rendez-vous (système à implémenter)
-- [ ] Conseils basés sur l'âge de grossesse (à implémenter)
-- [ ] Notifications hydratation/vitamines (à implémenter)
-- [ ] Signaux d'alerte (à implémenter)
+- [x] Conseils basés sur l'âge de grossesse
+- [x] Notifications hydratation/vitamines (UI faite)
 
 ##### 2. Troisième âge
 - [x] Sélection du profil "Troisième Âge"
-- [x] Formulaire avec :
-  - [x] Email et mot de passe
-  - [x] Nom complet
-  - [x] Téléphone
-  - [x] Âge
-  - [x] Contact d'urgence
-- [ ] Gestion des traitements (interface à créer)
-- [ ] Gestion des rendez-vous médicaux (interface à créer)
-- [ ] Rappels quotidiens (système à implémenter)
-- [ ] Conseils adaptés (tension, mobilité) (à implémenter)
+- [x] Formulaire complet
+- [x] Gestion des traitements (liste interactive)
+- [x] Gestion du contact d'urgence (éditable)
 
 ##### 3. Donneurs de sang
 - [x] Sélection du profil "Donneur de Sang"
-- [x] Formulaire avec :
-  - [x] Email et mot de passe
-  - [x] Nom complet
-  - [x] Téléphone
-  - [x] Groupe sanguin (A+, A-, B+, B-, AB+, AB-, O+, O-)
-  - [x] Localisation
-- [ ] Indication de la dernière date de don (interface à créer)
-- [ ] Zones/hôpitaux de collecte (données à ajouter)
-- [ ] Notifications pour besoins de sang (système à implémenter)
+- [x] Formulaire complet
+- [x] Indication de la dernière date de don (éditable)
+- [x] Carte de donneur visuelle
+- [x] Toggle disponibilité
 
 ---
 
@@ -153,22 +135,19 @@
 - [x] Tailwind CSS pour le styling
 - [x] Composants réutilisables
 
-#### 🚧 Backend (Structure prête, à implémenter)
+#### ✅ Backend (Implémenté)
 - [x] Architecture définie
 - [x] Types TypeScript créés
-- [x] Routes API documentées
-- [ ] Node.js + Express à implémenter
-- [ ] Connexion MongoDB à configurer
-- [ ] Authentification JWT à coder
-- [ ] CRUD complet à développer
+- [x] Routes API complètes
+- [x] Node.js + Next.js API Routes
+- [x] Connexion MongoDB (lib/db.ts)
+- [x] Authentification JWT
+- [x] CRUD Profils (via /api/profile/update)
 
-#### 🚧 Base de données
-- [x] Schémas MongoDB définis
-- [x] Structure de données documentée
-- [x] Données de test (15 pharmacies)
-- [ ] MongoDB Atlas à configurer
-- [ ] Collections à créer
-- [ ] Indexes à ajouter
+#### ✅ Base de données
+- [x] Schémas MongoDB complets (models/User.ts)
+- [x] Données dynamiques
+- [x] MongoDB Atlas ready
 
 #### 🚧 API
 - [x] Documentation API complète (API.md)

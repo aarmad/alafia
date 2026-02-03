@@ -1,5 +1,7 @@
 'use client'
 
+import { toast } from 'sonner'
+import LoadingScreen from '@/components/LoadingScreen'
 import { useState } from 'react'
 import Navbar from '@/components/Navbar'
 import { User, Building2, Heart, Users, Droplet, Mail, Lock, Phone, MapPin } from 'lucide-react'
@@ -60,11 +62,63 @@ export default function AuthPage() {
         },
     ]
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // TODO: Implement authentication logic
-        console.log('Form submitted:', { isLogin, selectedRole, formData })
-        alert('Fonctionnalité en cours de développement. Les données seront sauvegardées dans la base de données.')
+        setIsLoading(true)
+        setError(null)
+
+        try {
+            const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register'
+
+            // Préparer les données
+            let payload = { email: formData.email, password: formData.password } as any
+
+            if (!isLogin) {
+                if (!selectedRole) {
+                    setError('Veuillez sélectionner un type de profil')
+                    setIsLoading(false)
+                    return
+                }
+
+                payload = {
+                    ...formData, // Envoie toutes les données du formulaire
+                    role: selectedRole
+                }
+            }
+
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+
+            const data = await res.json()
+
+            if (!res.ok) {
+                toast.error(data.message || 'Une erreur est survenue')
+                throw new Error(data.message || 'Une erreur est survenue')
+            }
+
+            // Succès
+            toast.success(isLogin ? 'Connexion réussie !' : 'Compte créé avec succès !')
+
+            // Stocker le token
+            localStorage.setItem('token', data.data.token)
+            localStorage.setItem('user', JSON.stringify(data.data.user))
+
+            // Petit délai pour l'UX avant redirection
+            setTimeout(() => {
+                window.location.href = '/dashboard'
+            }, 1500)
+
+        } catch (err: any) {
+            setError(err.message)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -95,8 +149,8 @@ export default function AuthPage() {
                             <button
                                 onClick={() => setIsLogin(true)}
                                 className={`px-6 py-2 rounded-md transition-all ${isLogin
-                                        ? 'bg-primary text-white'
-                                        : 'text-muted-foreground hover:text-foreground'
+                                    ? 'bg-primary text-white'
+                                    : 'text-muted-foreground hover:text-foreground'
                                     }`}
                             >
                                 Connexion
@@ -107,8 +161,8 @@ export default function AuthPage() {
                                     setSelectedRole(null)
                                 }}
                                 className={`px-6 py-2 rounded-md transition-all ${!isLogin
-                                        ? 'bg-primary text-white'
-                                        : 'text-muted-foreground hover:text-foreground'
+                                    ? 'bg-primary text-white'
+                                    : 'text-muted-foreground hover:text-foreground'
                                     }`}
                             >
                                 Inscription
@@ -392,8 +446,29 @@ export default function AuthPage() {
                                         </>
                                     )}
 
-                                    <button type="submit" className="w-full btn-primary">
-                                        {isLogin ? 'Se connecter' : 'Créer mon compte'}
+                                    {/* Error Message */}
+                                    {error && (
+                                        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm animate-fade-in">
+                                            {error}
+                                        </div>
+                                    )}
+
+                                    <button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="w-full btn-primary disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center"
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Traitement...
+                                            </>
+                                        ) : (
+                                            isLogin ? 'Se connecter' : 'Créer mon compte'
+                                        )}
                                     </button>
                                 </form>
 
