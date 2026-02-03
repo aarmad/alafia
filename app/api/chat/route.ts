@@ -11,52 +11,42 @@ export async function POST(req: Request) {
 
     if (!process.env.HUGGINGFACE_API_KEY) {
       return new Response(JSON.stringify({
-        messages: [{ role: 'assistant', content: "Désolé, la configuration de l'IA est incomplète (Clé API manquante)." }]
-      }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+        messages: [{ role: 'assistant', content: "Configuration incomplète : Clé API manquante." }]
+      }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // Charger les données locales pour le contexte médical
     const jsonDirectory = path.join(process.cwd(), 'data');
     const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
     const diseases = JSON.parse(fileContents);
 
-    const systemPrompt = `Tu es ALAFIA, un assistant médical intelligent spécialisé dans le contexte de santé au Togo. 
-        Utilise ces informations sur les maladies courantes pour donner des conseils précis : ${JSON.stringify(diseases.slice(0, 15))}.
-        
+    const systemPrompt = `Tu es ALAFIA, assistant médical intelligent au Togo.
+        Connaissances : ${JSON.stringify(diseases.slice(0, 10))}.
         Règles :
-        1. Ton ton doit être bienveillant et professionnel.
-        2. Si un symptôme suggère une urgence, insiste lourdement sur l'appel au 118 (Pompiers) ou au 8200 (SAMU).
-        3. Ne fais pas de diagnostic médical définitif. Répète que tu es une IA.
-        4. Adapte tes conseils au climat du Togo.
-        5. Réponds brièvement en utilisant du formatage Markdown.`;
+        1. Ton bienveillant.
+        2. Urgence -> 118 (Pompiers) ou 8200 (SAMU).
+        3. Pas de diagnostic définitif.
+        4. Réponds brièvement en Markdown.`;
 
     const result = await generateText({
-      model: huggingface('mistralai/Mistral-7B-Instruct-v0.3') as any,
+      model: huggingface('mistralai/Mistral-7B-Instruct-v0.2') as any, // v0.2 est souvent plus stable sur les comptes gratuits
       system: systemPrompt,
       messages: messages,
     });
 
-    // Retourner une réponse JSON complète (non-streaming)
     return new Response(JSON.stringify({
-      messages: [
-        {
-          role: 'assistant',
-          content: result.text,
-        }
-      ]
-    }), {
-      headers: { 'Content-Type': 'application/json' }
-    });
+      messages: [{ role: 'assistant', content: result.text }]
+    }), { headers: { 'Content-Type': 'application/json' } });
   } catch (error: any) {
     console.error("Chat API Error:", error);
+
+    // Message d'erreur détaillé pour l'utilisateur
+    let userMessage = "Désolé, je rencontre une difficulté technique.";
+    if (error.message.includes('403')) {
+      userMessage = "Erreur 403 : Votre clé Hugging Face n'a pas les permissions 'Inference'. Veuillez activer 'Make calls to Inference Providers' dans vos paramètres de token.";
+    }
+
     return new Response(JSON.stringify({
-      messages: [{ role: 'assistant', content: "Désolé, une erreur technique est survenue. Veuillez réessayer." }]
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+      messages: [{ role: 'assistant', content: userMessage }]
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } });
   }
 }
