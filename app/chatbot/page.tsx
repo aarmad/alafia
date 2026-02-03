@@ -1,15 +1,13 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
-import { useChat } from 'ai/react'
+import { useChat } from '@ai-sdk/react'
 import Navbar from '@/components/Navbar'
 import { Send, Bot, User, Loader2, AlertCircle } from 'lucide-react'
 
 export default function ChatbotPage() {
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         api: '/api/chat',
-        // On force l'utilisation du protocole texte pour éviter les erreurs de flux
-        streamProtocol: 'text',
         initialMessages: [
             {
                 id: '1',
@@ -50,7 +48,7 @@ export default function ChatbotPage() {
                                 <Bot className="w-8 h-8 text-white" />
                             </div>
                         </div>
-                        <h1 className="text-3xl font-bold gradient-text mb-2">
+                        <h1 className="text-3xl font-bold gradient-text mb-2 text-primary">
                             Assistant Santé ALAFIA
                         </h1>
                         <p className="text-muted-foreground text-sm">
@@ -62,7 +60,7 @@ export default function ChatbotPage() {
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 flex items-start space-x-3">
                         <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                         <p className="text-xs text-amber-800">
-                            <strong>Urgence :</strong> Appelez le 118 ou le 8200.
+                            <strong>Urgence :</strong> Appelez le 118 (Pompiers) ou le 8200 (SAMU).
                         </p>
                     </div>
 
@@ -85,7 +83,7 @@ export default function ChatbotPage() {
                         ))}
 
                         {isLoading && messages[messages.length - 1]?.role === 'user' && (
-                            <div className="flex items-start space-x-3">
+                            <div className="flex items-start space-x-3 animate-pulse">
                                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent flex items-center justify-center">
                                     <Bot className="w-5 h-5 text-white" />
                                 </div>
@@ -98,7 +96,7 @@ export default function ChatbotPage() {
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Input */}
+                    {/* Input Area */}
                     <form onSubmit={handleSubmit} className="bg-white rounded-xl border p-4 shadow-lg">
                         <div className="flex items-end space-x-3">
                             <textarea
@@ -112,7 +110,7 @@ export default function ChatbotPage() {
                             <button
                                 type="submit"
                                 disabled={!input.trim() || isLoading}
-                                className="bg-primary text-white p-3 rounded-lg disabled:opacity-50"
+                                className="bg-primary hover:bg-primary/90 text-white p-3 rounded-lg disabled:opacity-50 transition-colors"
                             >
                                 <Send className="w-5 h-5" />
                             </button>
