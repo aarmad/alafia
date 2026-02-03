@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     if (!process.env.HUGGINGFACE_API_KEY) {
       return new Response(JSON.stringify({
-        messages: [{ role: 'assistant', content: "Configuration incomplète : Clé API manquante dans .env.local." }]
+        messages: [{ role: 'assistant', content: "Erreur : Clé API manquante dans .env.local." }]
       }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
 
@@ -20,12 +20,9 @@ export async function POST(req: Request) {
     const diseases = JSON.parse(fileContents);
 
     const systemPrompt = `Tu es ALAFIA, assistant médical intelligent au Togo.
-        Connaissances : ${JSON.stringify(diseases.slice(0, 10))}.
-        Règles :
-        1. Ton bienveillant et professionnel.
-        2. Urgence -> 118 (Pompiers) ou 8200 (SAMU).
-        3. Pas de diagnostic définitif. Tu es une IA.
-        4. Réponds brièvement en Markdown.`;
+        Connaissances : ${JSON.stringify(diseases.slice(0, 5))}.
+        Urgence -> 118 ou 8200.
+        Réponds brièvement en Markdown. Pas de diagnostic médical définitif.`;
 
     const result = await generateText({
       model: huggingface('mistralai/Mistral-7B-Instruct-v0.3') as any,
@@ -40,11 +37,10 @@ export async function POST(req: Request) {
     console.error("Chat API Error:", error);
 
     let userMessage = "Désolé, je rencontre une difficulté technique.";
-
     if (error.message.includes('403')) {
-      userMessage = "⚠️ Erreur de permissions : Votre token Hugging Face n'est pas autorisé. Veuillez créer un token de type 'Write' dans vos paramètres Hugging Face.";
+      userMessage = "⚠️ Permission refusée : Votre token Hugging Face doit être de type 'Write' ou avoir les droits 'Inference'.";
     } else if (error.message.includes('400')) {
-      userMessage = "⚠️ Erreur 400 : Le modèle est temporairement indisponible ou surchargé. Veuillez réessayer dans un instant.";
+      userMessage = "⚠️ Erreur API : Le modèle est surchargé. Merci de réessayer dans 30 secondes.";
     }
 
     return new Response(JSON.stringify({
