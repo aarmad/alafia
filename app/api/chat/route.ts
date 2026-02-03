@@ -1,4 +1,4 @@
-import { streamText } from 'ai';
+import { streamText, StreamingTextResponse } from 'ai';
 import { huggingface } from '@ai-sdk/huggingface';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -32,12 +32,13 @@ export async function POST(req: Request) {
         5. Réponds en Markdown.`;
 
     const result = await streamText({
-      model: huggingface('mistralai/Mistral-7B-Instruct-v0.3'),
+      model: huggingface('mistralai/Mistral-7B-Instruct-v0.3') as any,
       system: systemPrompt,
       messages,
     });
 
-    return result.toDataStreamResponse();
+    // Utiliser StreamingTextResponse pour une compatibilité maximale (flux texte pur)
+    return new StreamingTextResponse(result.textStream);
   } catch (error: any) {
     console.error("Chat API Error:", error);
     return new Response(JSON.stringify({
