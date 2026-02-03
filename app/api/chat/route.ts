@@ -15,19 +15,25 @@ export async function POST(req: Request) {
       });
     }
 
-    const lastUserMessage = messages[messages.length - 1].content;
-
-    // Charger le contexte local
+    // Charger le contexte local (diseases.json)
     const jsonDirectory = path.join(process.cwd(), 'data');
     const fileContents = await fs.readFile(jsonDirectory + '/diseases.json', 'utf8');
     const diseases = JSON.parse(fileContents);
-    const context = JSON.stringify(diseases.slice(0, 5));
+    const diseasesContext = JSON.stringify(diseases.slice(0, 5));
 
-    const prompt = `<|system|>\nTu es ALAFIA, assistant médical au Togo. Urgence: 118 ou 8200. Connaissances: ${context}\nRéponds brièvement en Markdown. Pas de diagnostic médical définitif.</s>\n<|user|>\n${lastUserMessage}</s>\n<|assistant|>\n`;
+    const systemMessage = {
+      role: "system",
+      content: `Tu es ALAFIA, un assistant médical spécialisé au Togo. 
+            Utilise ces connaissances locales : ${diseasesContext}. 
+            Urgence : 118 ou 8200. Ton bienveillant, réponds en Markdown.`
+    };
 
-    // APPEL DIRECT À L'API HUGGING FACE
+    // On formate les messages pour l'API de Chat (OpenAI compatible)
+    const chatMessages = [systemMessage, ...messages];
+
+    // APPEL AU NOUVEAU ROUTER HUGGING FACE (Point d'accès moderne)
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta",
+      "https://router.huggingface.co/v1/chat/completions",
       {
         headers: {
           Authorization: `Bearer ${apiKey}`,
@@ -35,29 +41,32 @@ export async function POST(req: Request) {
         },
         method: "POST",
         body: JSON.stringify({
-          inputs: prompt,
-          parameters: {
-            max_new_tokens: 500,
-            return_full_text: false
-          }
+          model: "mistralai/Mistral-7B-Instruct-v0.3", // Modèle certifié compatible Chat
+          messages: chatMessages,
+          max_tokens: 500,
+          stream: false
         }),
       }
     );
 
     const result = await response.json();
 
-    // Gestion des erreurs API
+    // Gestion des erreurs
     if (response.status !== 200) {
-      console.error("HF API Error:", result);
+      console.error("HF Router Error:", result);
       let msg = "Désolé, l'IA est temporairement indisponible.";
-      if (response.status === 403) msg = "⚠️ Erreur 403 : Vérifiez les permissions de votre Token (doit être 'Write' ou avoir l'accès 'Inference').";
+      if (response.status === 403) msg = "⚠️ Erreur de permissions : Assurez-vous d'utiliser un token 'Write' avec les droits 'Inference'.";
+      if (result.error && typeof result.error === 'string') msg = `Erreur : ${result.error}`;
       return NextResponse.json({ messages: [{ role: 'assistant', content: msg }] });
     }
 
-    const aiText = Array.isArray(result) ? result[0].generated_text : result.generated_text;
+    const aiContent = result.choices?.[0]?.message?.content;
 
     return NextResponse.json({
-      messages: [{ role: 'assistant', content: aiText || "Désolé, je n'ai pas pu générer de réponse." }]
+      messages: [{
+        role: 'assistant',
+        content: aiContent || "Je n'ai pas pu générer de réponse."
+      }]
     });
 
   } catch (error: any) {
