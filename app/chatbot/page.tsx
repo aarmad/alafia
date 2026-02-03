@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import Navbar from '@/components/Navbar'
-import { Send, Bot, User, Loader2, AlertCircle } from 'lucide-react'
+import { Send, Bot, User, Loader2, AlertCircle, Phone } from 'lucide-react'
 
 interface Message {
     id: string;
@@ -17,7 +17,7 @@ export default function ChatbotPage() {
         {
             id: '1',
             role: 'assistant',
-            content: 'Bonjour ! Je suis votre assistant santé ALAFIA. Comment puis-je vous aider aujourd\'hui ?',
+            content: 'Bonjour ! Je suis ALAFIA, votre assistant santé. Comment puis-je vous aider aujourd\'hui ?',
             createdAt: new Date()
         },
     ])
@@ -72,17 +72,17 @@ export default function ChatbotPage() {
                 }
                 setMessages(prev => [...prev, aiMessage])
             } else {
-                throw new Error("Réponse vide de l'IA")
+                throw new Error("Réponse vide")
             }
         } catch (error) {
-            console.error("Erreur Chatbot:", error)
-            const errorMessage: Message = {
-                id: Date.now().toString() + '-error',
+            console.error("Chat Error:", error)
+            const errorMsg: Message = {
+                id: Date.now().toString() + '-err',
                 role: 'assistant',
-                content: "Désolé, je rencontre une difficulté technique. Veuillez vérifier votre connexion ou réessayer plus tard.",
+                content: "Désolé, je rencontre un problème de connexion. Vérifiez votre clé API ou réessayez.",
                 createdAt: new Date()
             }
-            setMessages(prev => [...prev, errorMessage])
+            setMessages(prev => [...prev, errorMsg])
         } finally {
             setIsLoading(false)
         }
@@ -103,82 +103,72 @@ export default function ChatbotPage() {
             <main className="pt-20 pb-4 px-4 sm:px-6 lg:px-8 h-screen flex flex-col">
                 <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col">
                     {/* Header */}
-                    <div className="text-center mb-6">
-                        <div className="flex items-center justify-center mb-4">
+                    <div className="text-center mb-4">
+                        <div className="flex items-center justify-center mb-3">
                             <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-full shadow-lg">
                                 <Bot className="w-8 h-8 text-white" />
                             </div>
                         </div>
-                        <h1 className="text-3xl font-bold gradient-text mb-2 text-primary">
-                            Assistant Santé ALAFIA
-                        </h1>
-                        <p className="text-muted-foreground text-sm">
-                            Propulsé par Mistral AI (Togo)
-                        </p>
+                        <h1 className="text-2xl font-bold text-primary">ALAFIA AI</h1>
+                        <p className="text-muted-foreground text-xs">Assistant Santé Intégré (Togo)</p>
                     </div>
 
-                    {/* Disclaimer */}
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 flex items-start space-x-3 shadow-sm">
-                        <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                        <p className="text-xs text-amber-800">
-                            <strong>Urgence :</strong> Appelez le 118 (Pompiers) ou le 8200 (SAMU).
-                        </p>
+                    {/* Emergency Info */}
+                    <div className="bg-red-50 border border-red-100 rounded-xl p-3 mb-4 shadow-sm flex items-start space-x-3">
+                        <Phone className="w-5 h-5 text-red-600 flex-shrink-0 animate-pulse" />
+                        <div className="text-xs text-red-900 leading-tight">
+                            <strong>URGENCES TOGO :</strong> Pompiers: <b>118</b> | Police: <b>177</b> | Gendarmerie: <b>117</b> | Violences: <b>1014</b>
+                        </div>
                     </div>
 
                     {/* Messages */}
-                    <div className="flex-1 overflow-y-auto mb-4 space-y-4 bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-border">
+                    <div className="flex-1 overflow-y-auto mb-4 space-y-4 bg-white/40 backdrop-blur-md rounded-2xl p-4 border border-white/50 shadow-inner">
                         {messages.map((m) => (
-                            <div
-                                key={m.id}
-                                className={`flex items-start space-x-3 ${m.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}
-                            >
-                                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center shadow-sm ${m.role === 'user' ? 'bg-primary' : 'bg-gradient-to-br from-accent to-primary'}`}>
-                                    {m.role === 'user' ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
-                                </div>
-                                <div className={`flex-1 px-4 py-3 rounded-lg shadow-sm border ${m.role === 'user' ? 'bg-primary text-white' : 'bg-white'}`}>
-                                    <div className="text-sm prose prose-sm max-w-none whitespace-pre-line">
-                                        {m.content}
+                            <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}>
+                                <div className={`flex items-start max-w-[85%] space-x-2 ${m.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === 'user' ? 'bg-primary' : 'bg-gradient-to-br from-accent to-primary shadow-sm'}`}>
+                                        {m.role === 'user' ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
                                     </div>
-                                    <div className={`text-[10px] mt-1 ${m.role === 'user' ? 'text-white/70' : 'text-muted-foreground'}`}>
-                                        {m.createdAt?.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                                    <div className={`px-4 py-2.5 rounded-2xl text-sm shadow-sm ${m.role === 'user' ? 'bg-primary text-white rounded-tr-none' : 'bg-white border text-foreground rounded-tl-none'}`}>
+                                        <div className="prose prose-sm max-w-none whitespace-pre-line leading-relaxed">
+                                            {m.content}
+                                        </div>
+                                        <div className={`text-[10px] mt-1 opacity-60 ${m.role === 'user' ? 'text-right' : 'text-left'}`}>
+                                            {m.createdAt?.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         ))}
 
                         {isLoading && (
-                            <div className="flex items-start space-x-3 animate-pulse">
-                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent flex items-center justify-center shadow-sm">
-                                    <Bot className="w-5 h-5 text-white" />
-                                </div>
-                                <div className="px-4 py-3 rounded-lg bg-white border flex items-center space-x-2 shadow-sm">
+                            <div className="flex justify-start">
+                                <div className="flex items-center space-x-2 bg-white/80 border px-4 py-2 rounded-2xl shadow-sm">
                                     <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                                    <span className="text-sm text-muted-foreground italic">ALAFIA analyse vos symptômes...</span>
+                                    <span className="text-xs text-muted-foreground italic">ALAFIA rédige une réponse...</span>
                                 </div>
                             </div>
                         )}
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Input Area */}
-                    <form onSubmit={handleChatSubmit} className="bg-white rounded-xl border p-4 shadow-xl mb-2">
-                        <div className="flex items-end space-x-3">
-                            <textarea
-                                value={chatInput}
-                                onChange={(e) => setChatInput(e.target.value)}
-                                onKeyDown={handleKeyPress}
-                                placeholder="Décrivez comment vous vous sentez..."
-                                rows={1}
-                                className="flex-1 border border-border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none text-sm resize-none transition-all"
-                            />
-                            <button
-                                type="submit"
-                                disabled={!chatInput.trim() || isLoading}
-                                className="bg-primary hover:bg-primary/90 text-white p-3 rounded-lg disabled:opacity-50 transition-all active:scale-95 shadow-md"
-                            >
-                                <Send className="w-5 h-5" />
-                            </button>
-                        </div>
+                    {/* Input */}
+                    <form onSubmit={handleChatSubmit} className="bg-white rounded-2xl border p-2 shadow-xl flex items-center space-x-2">
+                        <textarea
+                            value={chatInput}
+                            onChange={(e) => setChatInput(e.target.value)}
+                            onKeyDown={handleKeyPress}
+                            placeholder="Comment vous sentez-vous ?"
+                            rows={1}
+                            className="flex-1 bg-transparent border-none focus:ring-0 px-4 py-2 text-sm resize-none"
+                        />
+                        <button
+                            type="submit"
+                            disabled={!chatInput.trim() || isLoading}
+                            className="bg-primary hover:bg-primary/90 text-white p-3 rounded-xl disabled:opacity-40 transition-all shadow-md active:scale-90"
+                        >
+                            <Send className="w-5 h-5" />
+                        </button>
                     </form>
                 </div>
             </main>
