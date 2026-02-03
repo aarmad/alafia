@@ -10,7 +10,13 @@
     "longitude": 1.2123,
     "isOnDuty": true,
     "hours": "24h/24",
-    "medications": ["Paracétamol", "Amoxicilline", "Ibuprofène", "Vitamine C", "Aspirine"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Ibuprofène",
+      "Vitamine C",
+      "Aspirine"
+    ]
   },
   {
     "id": "2",
@@ -23,7 +29,13 @@
     "longitude": 1.2156,
     "isOnDuty": true,
     "hours": "24h/24",
-    "medications": ["Paracétamol", "Doliprane", "Amoxicilline", "Métronidazole", "Fer"]
+    "medications": [
+      "Paracétamol",
+      "Doliprane",
+      "Amoxicilline",
+      "Métronidazole",
+      "Fer"
+    ]
   },
   {
     "id": "3",
@@ -36,7 +48,13 @@
     "longitude": 1.2189,
     "isOnDuty": false,
     "hours": "8h-20h",
-    "medications": ["Paracétamol", "Amoxicilline", "Ciprofloxacine", "Oméprazole", "Vitamine B"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Ciprofloxacine",
+      "Oméprazole",
+      "Vitamine B"
+    ]
   },
   {
     "id": "4",
@@ -49,7 +67,13 @@
     "longitude": 1.2234,
     "isOnDuty": false,
     "hours": "7h30-21h",
-    "medications": ["Paracétamol", "Ibuprofène", "Amoxicilline", "Acide folique", "Fer"]
+    "medications": [
+      "Paracétamol",
+      "Ibuprofène",
+      "Amoxicilline",
+      "Acide folique",
+      "Fer"
+    ]
   },
   {
     "id": "5",
@@ -62,7 +86,13 @@
     "longitude": 1.2267,
     "isOnDuty": false,
     "hours": "8h-20h",
-    "medications": ["Paracétamol", "Doliprane", "Amoxicilline", "Métronidazole", "Vitamine C"]
+    "medications": [
+      "Paracétamol",
+      "Doliprane",
+      "Amoxicilline",
+      "Métronidazole",
+      "Vitamine C"
+    ]
   },
   {
     "id": "6",
@@ -75,7 +105,13 @@
     "longitude": 1.2198,
     "isOnDuty": false,
     "hours": "8h-21h",
-    "medications": ["Paracétamol", "Ibuprofène", "Amoxicilline", "Ciprofloxacine", "Aspirine"]
+    "medications": [
+      "Paracétamol",
+      "Ibuprofène",
+      "Amoxicilline",
+      "Ciprofloxacine",
+      "Aspirine"
+    ]
   },
   {
     "id": "7",
@@ -88,7 +124,13 @@
     "longitude": 1.2212,
     "isOnDuty": true,
     "hours": "24h/24",
-    "medications": ["Paracétamol", "Amoxicilline", "Ibuprofène", "Oméprazole", "Vitamine D"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Ibuprofène",
+      "Oméprazole",
+      "Vitamine D"
+    ]
   },
   {
     "id": "8",
@@ -101,7 +143,13 @@
     "longitude": 1.1956,
     "isOnDuty": true,
     "hours": "24h/24",
-    "medications": ["Paracétamol", "Amoxicilline", "Métronidazole", "Fer", "Acide folique"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Métronidazole",
+      "Fer",
+      "Acide folique"
+    ]
   },
   {
     "id": "9",
@@ -114,7 +162,13 @@
     "longitude": 1.1989,
     "isOnDuty": false,
     "hours": "7h-22h",
-    "medications": ["Paracétamol", "Doliprane", "Amoxicilline", "Ibuprofène", "Vitamine C"]
+    "medications": [
+      "Paracétamol",
+      "Doliprane",
+      "Amoxicilline",
+      "Ibuprofène",
+      "Vitamine C"
+    ]
   },
   {
     "id": "10",
@@ -127,7 +181,13 @@
     "longitude": 1.2012,
     "isOnDuty": false,
     "hours": "8h-20h",
-    "medications": ["Paracétamol", "Amoxicilline", "Ciprofloxacine", "Fer", "Vitamine B"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Ciprofloxacine",
+      "Fer",
+      "Vitamine B"
+    ]
   },
   {
     "id": "11",
@@ -140,7 +200,13 @@
     "longitude": 1.2078,
     "isOnDuty": false,
     "hours": "7h30-21h",
-    "medications": ["Paracétamol", "Amoxicilline", "Métronidazole", "Oméprazole", "Vitamine C"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Métronidazole",
+      "Oméprazole",
+      "Vitamine C"
+    ]
   },
   {
     "id": "12",
@@ -153,7 +219,13 @@
     "longitude": 1.2045,
     "isOnDuty": false,
     "hours": "8h-21h",
-    "medications": ["Paracétamol", "Ibuprofène", "Amoxicilline", "Ciprofloxacine", "Aspirine"]
+    "medications": [
+      "Paracétamol",
+      "Ibuprofène",
+      "Amoxicilline",
+      "Ciprofloxacine",
+      "Aspirine"
+    ]
   },
   {
     "id": "13",
@@ -166,7 +238,13 @@
     "longitude": 1.2534,
     "isOnDuty": false,
     "hours": "8h-20h",
-    "medications": ["Paracétamol", "Amoxicilline", "Métronidazole", "Fer", "Vitamine D"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Métronidazole",
+      "Fer",
+      "Vitamine D"
+    ]
   },
   {
     "id": "14",
@@ -179,7 +257,13 @@
     "longitude": 1.2289,
     "isOnDuty": false,
     "hours": "7h-22h",
-    "medications": ["Paracétamol", "Doliprane", "Amoxicilline", "Ibuprofène", "Vitamine C"]
+    "medications": [
+      "Paracétamol",
+      "Doliprane",
+      "Amoxicilline",
+      "Ibuprofène",
+      "Vitamine C"
+    ]
   },
   {
     "id": "15",
@@ -192,6 +276,641 @@
     "longitude": 1.2789,
     "isOnDuty": true,
     "hours": "24h/24",
-    "medications": ["Paracétamol", "Amoxicilline", "Métronidazole", "Fer", "Acide folique"]
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline",
+      "Métronidazole",
+      "Fer",
+      "Acide folique"
+    ]
+  },
+  {
+    "id": "16",
+    "name": "Pharmacie Satis",
+    "address": "Route CEDEAO, en face du CEG KOSSIGAN",
+    "phone": "+228 70 44 85 17",
+    "whatsapp": "+228 70 44 85 17",
+    "quartier": "Lomé",
+    "latitude": 6.13,
+    "longitude": 1.22,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Ibuprofène"
+    ]
+  },
+  {
+    "id": "17",
+    "name": "Pharmacie M’Ba",
+    "address": "Agoe Légbassito, 300m après le marché de Légbassito",
+    "phone": "+228 70 27 81 81",
+    "whatsapp": "+228 70 27 81 81",
+    "quartier": "Agoè Légbassito",
+    "latitude": 6.2345,
+    "longitude": 1.1876,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Amoxicilline"
+    ]
+  },
+  {
+    "id": "18",
+    "name": "Pharmacie ADONAI",
+    "address": "Route nationale N1, face agence TOGOCOM Agoè-Nyivé",
+    "phone": "+228 22 50 04 05",
+    "whatsapp": "+228 22 50 04 05",
+    "quartier": "Agoè-Nyivé",
+    "latitude": 6.1856,
+    "longitude": 1.2012,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Vitamines"
+    ]
+  },
+  {
+    "id": "19",
+    "name": "Pharmacie Le Destin",
+    "address": "Route d’Aného immeuble ECOBANK",
+    "phone": "+228 70 41 15 41",
+    "whatsapp": "+228 70 41 15 41",
+    "quartier": "Route d'Aného",
+    "latitude": 6.1345,
+    "longitude": 1.2678,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Antiseptique"
+    ]
+  },
+  {
+    "id": "20",
+    "name": "Pharmacie Le Bon Samaritain",
+    "address": "40 Av de la libération, Fréau jardin",
+    "phone": "+228 22 21 45 30",
+    "whatsapp": "+228 22 21 45 30",
+    "quartier": "Fréau Jardin",
+    "latitude": 6.1289,
+    "longitude": 1.2234,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Doliprane"
+    ]
+  },
+  {
+    "id": "21",
+    "name": "Pharmacie de l’Union",
+    "address": "Bd Malfakassa Bè Kpota",
+    "phone": "+228 22 27 71 64",
+    "whatsapp": "+228 22 27 71 64",
+    "quartier": "Bè Kpota",
+    "latitude": 6.1456,
+    "longitude": 1.2345,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Sirop"
+    ]
+  },
+  {
+    "id": "22",
+    "name": "Pharmacie des Oliviers",
+    "address": "266, Bd Félix H Boigny à coté de l’agence Moov",
+    "phone": "+228 22 27 04 34",
+    "whatsapp": "+228 22 27 04 34",
+    "quartier": "Centre Ville",
+    "latitude": 6.1312,
+    "longitude": 1.2189,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Oméprazole"
+    ]
+  },
+  {
+    "id": "23",
+    "name": "Pharmacie de l’Aéroport",
+    "address": "631Bd du haho.sito Aéroport",
+    "phone": "+228 22 26 21 22",
+    "whatsapp": "+228 22 26 21 22",
+    "quartier": "Aéroport",
+    "latitude": 6.1567,
+    "longitude": 1.2543,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Masques"
+    ]
+  },
+  {
+    "id": "24",
+    "name": "Pharmacie Flamme d’Amour",
+    "address": "Agodékè-Lomé",
+    "phone": "+228 22 45 70 14",
+    "whatsapp": "+228 22 45 70 14",
+    "quartier": "Agodékè",
+    "latitude": 6.1456,
+    "longitude": 1.2890,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "25",
+    "name": "Pharmacie Notre Dame de Lourdes",
+    "address": "Bd Adidoadin-Assiyéyé carrefour des 2 lions",
+    "phone": "+228 22 20 56 94",
+    "whatsapp": "+228 22 20 56 94",
+    "quartier": "Adidoadin",
+    "latitude": 6.1890,
+    "longitude": 1.1980,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Ciprofloxacine"
+    ]
+  },
+  {
+    "id": "26",
+    "name": "Pharmacie Hosanna",
+    "address": "Carrefour Sagbado",
+    "phone": "+228 97 77 69 59",
+    "whatsapp": "+228 97 77 69 59",
+    "quartier": "Sagbado",
+    "latitude": 6.1789,
+    "longitude": 1.1567,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Artésunate"
+    ]
+  },
+  {
+    "id": "27",
+    "name": "Pharmacie Raoudha",
+    "address": "4205 Bd du Zio non loin de la foire Togo 2000",
+    "phone": "+228 90 28 75 00",
+    "whatsapp": "+228 90 28 75 00",
+    "quartier": "Foire Togo 2000",
+    "latitude": 6.1543,
+    "longitude": 1.2456,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Vitamines"
+    ]
+  },
+  {
+    "id": "28",
+    "name": "Pharmacie Univers-Santé",
+    "address": "Angle rue vers primature Cité OUA, en face du CHU CAMPUS",
+    "phone": "+228 22 61 81 43",
+    "whatsapp": "+228 93 88 83 31",
+    "quartier": "Cité OUA",
+    "latitude": 6.1678,
+    "longitude": 1.2234,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Bétadine"
+    ]
+  },
+  {
+    "id": "29",
+    "name": "Pharmacie Bien Être",
+    "address": "Hédzranawoe",
+    "phone": "+228 92 39 74 92",
+    "whatsapp": "+228 92 39 74 92",
+    "quartier": "Hédzranawoé",
+    "latitude": 6.1656,
+    "longitude": 1.2456,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Magnésium"
+    ]
+  },
+  {
+    "id": "30",
+    "name": "Pharmacie SANGUERA",
+    "address": "Entre EPP et Lycée Sanguera",
+    "phone": "+228 90 31 96 87",
+    "whatsapp": "+228 92 95 79 08",
+    "quartier": "Sanguéra",
+    "latitude": 6.2012,
+    "longitude": 1.1456,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol",
+      "Doliprane"
+    ]
+  },
+  {
+    "id": "31",
+    "name": "Pharmacie à Dieu la Gloire",
+    "address": "200 m du marché de Légbassito, grand contournement",
+    "phone": "+228 93 26 36 00",
+    "whatsapp": "+228 93 26 36 00",
+    "quartier": "Légbassito",
+    "latitude": 6.2367,
+    "longitude": 1.1856,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "32",
+    "name": "Pharmacie Regina Pacis",
+    "address": "Quartier Adétikopé",
+    "phone": "+228 70 45 98 58",
+    "whatsapp": "+228 99 83 90 83",
+    "quartier": "Adétikopé",
+    "latitude": 6.2890,
+    "longitude": 1.2123,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "33",
+    "name": "Pharmacie Emmaüs",
+    "address": "Route de Mission-Tové, non loin de la Station Total",
+    "phone": "+228 70 40 25 40",
+    "whatsapp": "+228 96 80 09 12",
+    "quartier": "Mission-Tové",
+    "latitude": 6.2567,
+    "longitude": 1.1789,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "34",
+    "name": "Pharmacie Verte",
+    "address": "Av de la Chance, Rond point TOGOCOM, Agbalépédo",
+    "phone": "+228 22 25 03 26",
+    "whatsapp": "+228 91 98 50 17",
+    "quartier": "Agbalépédo",
+    "latitude": 6.1756,
+    "longitude": 1.2078,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "35",
+    "name": "Pharmacie Maïna",
+    "address": "Route Zanguéra-Carrefour bleu, non loin du marché",
+    "phone": "+228 70 43 65 34",
+    "whatsapp": "+228 90 16 92 23",
+    "quartier": "Zanguéra",
+    "latitude": 6.1989,
+    "longitude": 1.1345,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "36",
+    "name": "Pharmacie Vigueur",
+    "address": "267, Rue Agbalépédo non loin du marché",
+    "phone": "+228 22 51 63 30",
+    "whatsapp": "+228 70 44 81 96",
+    "quartier": "Agbalépédo",
+    "latitude": 6.1743,
+    "longitude": 1.2065,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "37",
+    "name": "Pharmacie FOREVER",
+    "address": "142, Av des Kondona, non loin du Garage Central",
+    "phone": "+228 22 26 11 77",
+    "whatsapp": "+228 22 42 42 22",
+    "quartier": "Forever",
+    "latitude": 6.1543,
+    "longitude": 1.2312,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "38",
+    "name": "Pharmacie YEM-BLA",
+    "address": "258, Av Akei face Résidence du Bénin",
+    "phone": "+228 22 26 76 51",
+    "whatsapp": "+228 90 88 98 72",
+    "quartier": "Akei",
+    "latitude": 6.1567,
+    "longitude": 1.2389,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "39",
+    "name": "Pharmacie de la MAIRIE",
+    "address": "39, Av Nicolas Grunitzky, face à la mairie Nyékonakpoé",
+    "phone": "+228 22 21 26 39",
+    "whatsapp": "+228 22 21 26 39",
+    "quartier": "Nyékonakpoé",
+    "latitude": 6.1312,
+    "longitude": 1.2145,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "40",
+    "name": "Pharmacie ADIDOGOME",
+    "address": "Av du 30 Août, face à la banque BSIC",
+    "phone": "+228 22 50 54 85",
+    "whatsapp": "+228 22 50 54 85",
+    "quartier": "Adidogomé",
+    "latitude": 6.1656,
+    "longitude": 1.2012,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "41",
+    "name": "Pharmacie de la CHARITE",
+    "address": "Rue du marché, non loin de CEG Agoé Centre",
+    "phone": "+228 22 25 12 60",
+    "whatsapp": "+228 22 25 12 60",
+    "quartier": "Agoé Centre",
+    "latitude": 6.1823,
+    "longitude": 1.1989,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "42",
+    "name": "Pharmacie de la LIBERATION",
+    "address": "199, Av de la libération, Angle rue Warani",
+    "phone": "+228 22 22 25 25",
+    "whatsapp": "+228 22 22 25 25",
+    "quartier": "Libération",
+    "latitude": 6.1289,
+    "longitude": 1.2267,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "43",
+    "name": "Pharmacie AVE MARIA",
+    "address": "Carrefour CHU Tokoin, face Station-Service de Kodomé",
+    "phone": "+228 22 22 33 01",
+    "whatsapp": "+228 22 22 33 01",
+    "quartier": "Tokoin",
+    "latitude": 6.1423,
+    "longitude": 1.2212,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "44",
+    "name": "Pharmacie de L’EDEN",
+    "address": "Route d’Aného, face cité Baguida",
+    "phone": "+228 22 27 53 55",
+    "whatsapp": "+228 22 27 53 55",
+    "quartier": "Baguida",
+    "latitude": 6.1189,
+    "longitude": 1.2756,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "45",
+    "name": "Pharmacie BEL AIR",
+    "address": "Rue du commerce, non loin de l’Hôtel Palm Beach",
+    "phone": "+228 22 21 03 21",
+    "whatsapp": "+228 22 21 03 21",
+    "quartier": "Centre Ville",
+    "latitude": 6.1245,
+    "longitude": 1.2212,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "46",
+    "name": "Pharmacie du BOULEVARD",
+    "address": "Bd DU 13 Janvier, rue AKrowa, face Diamond Bank Dékon",
+    "phone": "+228 22 21 65 49",
+    "whatsapp": "+228 22 21 65 49",
+    "quartier": "Dékon",
+    "latitude": 6.1367,
+    "longitude": 1.2234,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "47",
+    "name": "Pharmacie SOURCE DE VIE",
+    "address": "Bd de la victoire, face Collège Protestant Tokoin Habitat",
+    "phone": "+228 22 22 45 71",
+    "whatsapp": "+228 22 22 45 71",
+    "quartier": "Tokoin Habitat",
+    "latitude": 6.1456,
+    "longitude": 1.2189,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "48",
+    "name": "Pharmacie du PEUPLE",
+    "address": "Rue Santigou Tokoin Nukafu",
+    "phone": "+228 22 26 84 22",
+    "whatsapp": "+228 22 26 84 22",
+    "quartier": "Tokoin Nukafu",
+    "latitude": 6.1567,
+    "longitude": 1.2267,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "49",
+    "name": "Pharmacie EPIPHANIA",
+    "address": "Rue Lapampa, carrefour Agbémadon Adidogomé",
+    "phone": "+228 22 25 02 62",
+    "whatsapp": "+228 22 25 02 62",
+    "quartier": "Adidogomé",
+    "latitude": 6.1689,
+    "longitude": 1.1956,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "50",
+    "name": "Pharmacie BIOVA",
+    "address": "Bd Félix Houphouet Boigny.Rue Badjode Gbényédji",
+    "phone": "+228 22 27 82 98",
+    "whatsapp": "+228 91 44 51 91",
+    "quartier": "Gbényédji",
+    "latitude": 6.1389,
+    "longitude": 1.2312,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "51",
+    "name": "Pharmacie JEANNE D’ARC",
+    "address": "71,Rue Sylvanus Olympio, sur l’Ancienne route d’Aného",
+    "phone": "+228 22 22 08 01",
+    "whatsapp": "+228 22 22 08 01",
+    "quartier": "Ancienne route Aného",
+    "latitude": 6.1345,
+    "longitude": 1.2456,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "52",
+    "name": "Pharmacie ADOUNI",
+    "address": "VAKPOSSITO Logogome carrefour AISED",
+    "phone": "+228 90 33 04 19",
+    "whatsapp": "+228 70 39 39 39",
+    "quartier": "Vakpossito",
+    "latitude": 6.2123,
+    "longitude": 1.1989,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "53",
+    "name": "Pharmacie Bon Secours",
+    "address": "Rue de l’Est Mono, Collège Plateau Tokoin Casablanca",
+    "phone": "+228 22 45 74 76",
+    "whatsapp": "+228 22 45 74 76",
+    "quartier": "Tokoin Casablanca",
+    "latitude": 6.1543,
+    "longitude": 1.2156,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "54",
+    "name": "Pharmacie Justine",
+    "address": "291, Bd des Armées Tokoin Habitat",
+    "phone": "+228 22 21 00 01",
+    "whatsapp": "+228 22 21 00 01",
+    "quartier": "Tokoin Habitat",
+    "latitude": 6.1478,
+    "longitude": 1.2134,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "55",
+    "name": "Pharmacie Saint Michel",
+    "address": "Route nationale N°1, près de la Brasserie BB Agoènyivé",
+    "phone": "+228 22 51 70 22",
+    "whatsapp": "+228 22 51 70 22",
+    "quartier": "Agoè-Nyivé",
+    "latitude": 6.1923,
+    "longitude": 1.2045,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
+  },
+  {
+    "id": "56",
+    "name": "Pharmacie CLEMENCE",
+    "address": "Agoè réserve après l’agence CEET",
+    "phone": "+228 70 19 35 35",
+    "whatsapp": "+228 70 19 35 35",
+    "quartier": "Agoè Réserve",
+    "latitude": 6.2045,
+    "longitude": 1.2123,
+    "isOnDuty": false,
+    "hours": "8h-20h",
+    "medications": [
+      "Paracétamol"
+    ]
   }
 ]
