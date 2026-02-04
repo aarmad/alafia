@@ -399,8 +399,8 @@ export default function DoctorDashboard({ user }: { user: any }) {
 
                         <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
                             {messages.map((msg, i) => (
-                                <div key={i} className={`flex ${msg.sender === user.userId ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[80%] p-4 rounded-3xl text-sm shadow-sm ${msg.sender === user.userId
+                                <div key={i} className={`flex ${msg.sender === user.id ? 'justify-end' : 'justify-start'}`}>
+                                    <div className={`max-w-[80%] p-4 rounded-3xl text-sm shadow-sm ${msg.sender === user.id
                                         ? 'bg-indigo-600 text-white rounded-tr-none'
                                         : 'bg-white text-gray-800 rounded-tl-none border'
                                         }`}>

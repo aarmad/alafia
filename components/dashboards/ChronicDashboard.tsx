@@ -15,6 +15,8 @@ export default function ChronicDashboard({ user }: { user: any }) {
     const [messages, setMessages] = useState<any[]>([])
     const [newMessage, setNewMessage] = useState('')
     const [isLoadingRecords, setIsLoadingRecords] = useState(true)
+    const [docSearchQuery, setDocSearchQuery] = useState('')
+    const [docSpecialtyFilter, setDocSpecialtyFilter] = useState('')
 
     useEffect(() => {
         fetchHealthRecords()
@@ -176,19 +178,47 @@ export default function ChronicDashboard({ user }: { user: any }) {
                     ) : (
                         <div className="text-center py-6 border-2 border-dashed rounded-xl">
                             {isSearchingDoctor ? (
-                                <div className="space-y-4 max-h-60 overflow-y-auto px-4">
+                                <div className="space-y-4 max-h-80 overflow-y-auto px-4 pb-4">
                                     <div className="flex justify-between items-center mb-2">
                                         <p className="text-xs font-bold text-gray-500">MÉDECINS DISPONIBLES</p>
-                                        <button onClick={() => setIsSearchingDoctor(false)} className="text-xs text-red-500 hover:underline">Annuler</button>
+                                        <button onClick={() => setIsSearchingDoctor(false)} className="text-xs text-red-500 hover:underline font-bold">Annuler</button>
                                     </div>
-                                    {doctors.length === 0 && <p className="text-xs text-gray-400">Recherche...</p>}
-                                    {doctors.map(doc => (
-                                        <div key={doc._id} className="p-3 bg-gray-50 rounded-lg text-left border hover:border-primary transition-colors group">
+
+                                    <div className="space-y-2 mb-4">
+                                        <input
+                                            type="text"
+                                            placeholder="Rechercher par nom..."
+                                            className="w-full text-xs p-2.5 bg-gray-50 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
+                                            value={docSearchQuery}
+                                            onChange={(e) => setDocSearchQuery(e.target.value)}
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Spécialité (ex: Cardiologue)..."
+                                            className="w-full text-xs p-2.5 bg-gray-50 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
+                                            value={docSpecialtyFilter}
+                                            onChange={(e) => setDocSpecialtyFilter(e.target.value)}
+                                        />
+                                    </div>
+
+                                    {doctors.filter(doc => {
+                                        const nameMatch = doc.profile.name.toLowerCase().includes(docSearchQuery.toLowerCase());
+                                        const specMatch = doc.profile.specialization.toLowerCase().includes(docSpecialtyFilter.toLowerCase());
+                                        return nameMatch && specMatch;
+                                    }).length === 0 && <p className="text-xs text-gray-400 py-4 italic">Aucun médecin ne correspond à votre recherche.</p>}
+
+                                    {doctors.filter(doc => {
+                                        const nameMatch = doc.profile.name.toLowerCase().includes(docSearchQuery.toLowerCase());
+                                        const specMatch = doc.profile.specialization.toLowerCase().includes(docSpecialtyFilter.toLowerCase());
+                                        return nameMatch && specMatch;
+                                    }).map(doc => (
+                                        <div key={doc._id} className="p-3 bg-white rounded-lg text-left border shadow-sm hover:border-primary transition-colors group">
                                             <p className="font-bold text-sm">Dr. {doc.profile.name}</p>
-                                            <p className="text-[10px] text-gray-400 uppercase font-black">{doc.profile.specialization}</p>
+                                            <p className="text-[10px] text-primary uppercase font-bold">{doc.profile.specialization}</p>
+                                            <p className="text-[9px] text-gray-400">{doc.profile.hospital}</p>
                                             <button
                                                 onClick={() => requestDoctor(doc._id)}
-                                                className="mt-2 w-full text-xs bg-white border py-1.5 rounded-md font-bold text-primary hover:bg-primary hover:text-white transition-all"
+                                                className="mt-3 w-full text-[10px] bg-primary text-white py-2 rounded-md font-bold hover:bg-primary-dark transition-all shadow-md active:scale-95"
                                             >
                                                 Demander le suivi
                                             </button>
@@ -289,13 +319,13 @@ export default function ChronicDashboard({ user }: { user: any }) {
 
                         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
                             {messages.map((msg, i) => (
-                                <div key={i} className={`flex ${msg.sender === user.userId ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[80%] p-3 rounded-2xl text-sm shadow-sm ${msg.sender === user.userId
-                                            ? 'bg-primary text-white rounded-tr-none'
-                                            : 'bg-white text-gray-800 rounded-tl-none border'
+                                <div key={i} className={`flex ${msg.sender === user.id ? 'justify-end' : 'justify-start'}`}>
+                                    <div className={`max-w-[80%] p-3 rounded-2xl text-sm shadow-sm ${msg.sender === user.id
+                                        ? 'bg-primary text-white rounded-tr-none'
+                                        : 'bg-white text-gray-800 rounded-tl-none border'
                                         }`}>
                                         {msg.content}
-                                        <p className={`text-[10px] mt-1 opacity-50 text-right ${msg.sender === user.userId ? 'text-white' : 'text-gray-400'}`}>
+                                        <p className={`text-[10px] mt-1 opacity-50 text-right ${msg.sender === user.id ? 'text-white' : 'text-gray-400'}`}>
                                             {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </p>
                                     </div>

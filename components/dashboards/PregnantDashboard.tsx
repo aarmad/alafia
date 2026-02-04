@@ -24,6 +24,8 @@ export default function PregnantDashboard({ user }: { user: any }) {
     const [activeContact, setActiveContact] = useState<any>(null)
     const [messages, setMessages] = useState<any[]>([])
     const [newMessage, setNewMessage] = useState('')
+    const [docSearchQuery, setDocSearchQuery] = useState('')
+    const [docSpecialtyFilter, setDocSpecialtyFilter] = useState('')
 
     // Form
     const [newWeeks, setNewWeeks] = useState(weeksPregnant)

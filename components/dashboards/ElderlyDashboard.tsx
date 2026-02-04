@@ -24,6 +24,8 @@ export default function ElderlyDashboard({ user }: { user: any }) {
     const [activeContact, setActiveContact] = useState<any>(null)
     const [messages, setMessages] = useState<any[]>([])
     const [newMessage, setNewMessage] = useState('')
+    const [docSearchQuery, setDocSearchQuery] = useState('')
+    const [docSpecialtyFilter, setDocSpecialtyFilter] = useState('')
 
     useEffect(() => {
         fetchHealthRecords()
@@ -301,18 +303,50 @@ export default function ElderlyDashboard({ user }: { user: any }) {
                         ) : (
                             <div className="text-center p-6 border-2 border-dashed rounded-2xl">
                                 {isSearchingDoctor ? (
-                                    <div className="space-y-3 max-h-60 overflow-y-auto pr-2 scrollbar-thin">
-                                        {doctors.map(doc => (
+                                    <div className="space-y-3 max-h-80 overflow-y-auto pr-2 scrollbar-thin pb-4">
+                                        <div className="flex justify-between items-center mb-1 px-1">
+                                            <p className="text-[10px] font-bold text-gray-400">FILTRES</p>
+                                            <button onClick={() => setIsSearchingDoctor(false)} className="text-[10px] text-red-500 font-bold hover:underline">Fermer</button>
+                                        </div>
+
+                                        <div className="space-y-1.5 mb-4">
+                                            <input
+                                                type="text"
+                                                placeholder="Rechercher par nom..."
+                                                className="w-full text-xs p-2.5 bg-gray-50 border rounded-xl outline-none focus:border-teal-300"
+                                                value={docSearchQuery}
+                                                onChange={(e) => setDocSearchQuery(e.target.value)}
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Spécialité (ex: Gériatre)..."
+                                                className="w-full text-xs p-2.5 bg-gray-50 border rounded-xl outline-none focus:border-teal-300"
+                                                value={docSpecialtyFilter}
+                                                onChange={(e) => setDocSpecialtyFilter(e.target.value)}
+                                            />
+                                        </div>
+
+                                        {doctors.filter(doc => {
+                                            const nameMatch = doc.profile.name.toLowerCase().includes(docSearchQuery.toLowerCase());
+                                            const specMatch = doc.profile.specialization.toLowerCase().includes(docSpecialtyFilter.toLowerCase());
+                                            return nameMatch && specMatch;
+                                        }).length === 0 && <p className="text-xs text-gray-400 py-4 italic">Aucun médecin trouvé.</p>}
+
+                                        {doctors.filter(doc => {
+                                            const nameMatch = doc.profile.name.toLowerCase().includes(docSearchQuery.toLowerCase());
+                                            const specMatch = doc.profile.specialization.toLowerCase().includes(docSpecialtyFilter.toLowerCase());
+                                            return nameMatch && specMatch;
+                                        }).map(doc => (
                                             <button
                                                 key={doc._id}
                                                 onClick={() => requestDoctor(doc._id)}
-                                                className="w-full text-left p-4 hover:bg-gray-50 rounded-xl border transition-all"
+                                                className="w-full text-left p-4 hover:bg-gray-50 rounded-xl border transition-all group"
                                             >
-                                                <p className="font-bold text-sm">Dr. {doc.profile.name}</p>
-                                                <p className="text-[10px] text-gray-400 uppercase font-black">{doc.profile.specialization}</p>
+                                                <p className="font-bold text-sm group-hover:text-teal-600">Dr. {doc.profile.name}</p>
+                                                <p className="text-[10px] text-teal-400 font-bold uppercase">{doc.profile.specialization}</p>
+                                                <p className="text-[9px] text-gray-400">{doc.profile.hospital}</p>
                                             </button>
                                         ))}
-                                        <button onClick={() => setIsSearchingDoctor(false)} className="text-xs text-red-500 font-bold underline mt-4">Fermer</button>
                                     </div>
                                 ) : (
                                     <>
