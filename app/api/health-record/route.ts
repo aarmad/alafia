@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 
         // Vérifier permission
         const isSelf = patientId === user.userId;
-        const isAffiliated = patient.connections.includes(user.userId);
+        const isAffiliated = patient.connections?.includes(user.userId);
 
         if (!isSelf && !isAffiliated) {
             return NextResponse.json({ success: false, message: 'Permission refusée' }, { status: 403 });
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
         if (!doctor || !patient) return NextResponse.json({ success: false, message: 'Utilisateur introuvable' }, { status: 404 });
 
         // Vérifier si le docteur est connecté au patient
-        if (!patient.connections.includes(user.userId)) {
+        if (!patient.connections?.includes(user.userId)) {
             return NextResponse.json({ success: false, message: 'Vous n\'êtes pas affilié à ce patient' }, { status: 403 });
         }
 

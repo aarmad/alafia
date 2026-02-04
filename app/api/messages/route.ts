@@ -53,7 +53,7 @@ export async function POST(req: Request) {
 
         // Vérifier si les utilisateurs sont connectés
         const sender = await User.findById(user.userId);
-        if (!sender.connections.includes(receiverId)) {
+        if (!sender.connections?.includes(receiverId)) {
             return NextResponse.json({ success: false, message: 'Vous n\'êtes pas connectés' }, { status: 403 });
         }
 
