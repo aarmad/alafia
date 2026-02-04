@@ -71,7 +71,7 @@ const ChronicProfileSchema = new Schema({
     medications: [{ type: String }],
     treatingDoctorId: { type: Schema.Types.ObjectId, ref: 'User' }, // ID du docteur affilié
     treatingDoctorName: { type: String },
-    healthRecords: [HealthRecordEntrySchema], // Carnet de santé virtuel
+    healthRecords: { type: [HealthRecordEntrySchema], default: [] }, // Carnet de santé virtuel
     lastSync: { type: Date, default: Date.now }
 }, { _id: false });
 
@@ -82,7 +82,7 @@ const DoctorProfileSchema = new Schema({
     specialization: { type: String, required: true },
     licenseNumber: { type: String, required: true },
     hospital: { type: String, required: true },
-    followedPatients: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Patients assignés
+    followedPatients: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }], // Patients assignés
 }, { _id: false });
 
 // Schéma Utilisateur Principal
@@ -110,8 +110,8 @@ const UserSchema = new Schema({
         required: true
     },
     // Gestion des relations Patient <-> Docteur
-    pendingRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Demandes reçues
-    connections: [{ type: Schema.Types.ObjectId, ref: 'User' }],      // Utilisateurs connectés (chat autorisé)
+    pendingRequests: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }], // Demandes reçues
+    connections: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],      // Utilisateurs connectés (chat autorisé)
     createdAt: {
         type: Date,
         default: Date.now
