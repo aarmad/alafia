@@ -73,6 +73,23 @@ export async function POST(req: Request) {
                     location: profileData.location,
                 };
                 break;
+            case 'chronic':
+                userProfile = {
+                    name: profileData.name,
+                    phone: profileData.phone,
+                    disease: profileData.disease,
+                    medications: profileData.medications || [],
+                };
+                break;
+            case 'doctor':
+                userProfile = {
+                    name: profileData.name,
+                    phone: profileData.phone,
+                    specialization: profileData.specialization,
+                    licenseNumber: profileData.licenseNumber,
+                    hospital: profileData.hospital,
+                };
+                break;
             default:
                 return NextResponse.json(
                     { success: false, message: 'Rôle invalide' },

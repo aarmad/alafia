@@ -9,7 +9,7 @@ export interface Pharmacy {
     longitude: number
     isOnDuty: boolean
     hours: string
-    medications: string[]
+    medications: (string | MedicationStock)[]
     distance?: number
 }
 
@@ -17,9 +17,27 @@ export interface User {
     id: string
     email: string
     password: string
-    role: 'pharmacy' | 'pregnant' | 'elderly' | 'donor'
+    role: 'pharmacy' | 'pregnant' | 'elderly' | 'donor' | 'chronic' | 'doctor'
     createdAt: Date
-    profile?: PregnantProfile | ElderlyProfile | DonorProfile | PharmacyProfile
+    profile?: PregnantProfile | ElderlyProfile | DonorProfile | PharmacyProfile | ChronicProfile | DoctorProfile
+}
+
+export interface ChronicProfile {
+    name: string
+    phone: string
+    disease: string
+    medications: string[]
+    treatingDoctor?: string
+    lastSync: Date
+}
+
+export interface DoctorProfile {
+    name: string
+    phone: string
+    specialization: string
+    licenseNumber: string
+    hospital: string
+    followedPatients: string[]
 }
 
 export interface PregnantProfile {

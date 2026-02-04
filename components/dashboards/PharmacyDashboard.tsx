@@ -19,6 +19,7 @@ export default function PharmacyDashboard({ user }: { user: any }) {
     const [medications, setMedications] = useState<Medication[]>(user.profile?.medications || [])
     const [loading, setLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [inventorySearch, setInventorySearch] = useState('')
 
     // Form state
     const [newMedName, setNewMedName] = useState('')
@@ -92,6 +93,21 @@ export default function PharmacyDashboard({ user }: { user: any }) {
         toast.success("Médicament retiré")
     }
 
+    const adjustQuantity = async (index: number, delta: number) => {
+        const newMedsList = [...medications]
+        const med = newMedsList[index]
+        if (typeof med !== 'string') {
+            med.quantity = Math.max(0, med.quantity + delta)
+            setMedications(newMedsList)
+            await updateProfile({ medications: newMedsList })
+        }
+    }
+
+    const filteredMeds = medications.filter(med => {
+        const name = typeof med === 'string' ? med : med.name
+        return name.toLowerCase().includes(inventorySearch.toLowerCase())
+    })
+
     return (
         <div className="space-y-6">
             {/* Header avec Statut de Garde */}
@@ -125,6 +141,16 @@ export default function PharmacyDashboard({ user }: { user: any }) {
                                 Inventaire du Stock
                             </h2>
                             <div className="flex items-center gap-3">
+                                <div className="relative hidden md:block">
+                                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                                    <input
+                                        type="text"
+                                        placeholder="Filtrer..."
+                                        className="pl-9 pr-4 py-1.5 border rounded-full text-sm focus:ring-2 focus:ring-primary/20 outline-none w-48"
+                                        value={inventorySearch}
+                                        onChange={e => setInventorySearch(e.target.value)}
+                                    />
+                                </div>
                                 <span className="text-sm bg-white px-3 py-1 rounded-full border text-gray-600 font-medium">
                                     {medications.length} réf.
                                 </span>
@@ -219,47 +245,62 @@ export default function PharmacyDashboard({ user }: { user: any }) {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
-                                    {medications.length === 0 ? (
+                                    {filteredMeds.length === 0 ? (
                                         <tr>
                                             <td colSpan={4} className="p-8 text-center text-gray-400">
                                                 <div className="flex flex-col items-center gap-2">
                                                     <Package className="w-8 h-8 opacity-20" />
-                                                    <p>Aucun médicament dans votre stock.</p>
-                                                    <button onClick={() => setIsModalOpen(true)} className="text-primary hover:underline mt-2">
-                                                        Ajouter le premier
-                                                    </button>
+                                                    <p>{inventorySearch ? "Aucun résultat pour cette recherche." : "Aucun médicament dans votre stock."}</p>
+                                                    {!inventorySearch && (
+                                                        <button onClick={() => setIsModalOpen(true)} className="text-primary hover:underline mt-2">
+                                                            Ajouter le premier
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>
                                     ) : (
-                                        medications.map((med, idx) => (
-                                            <tr key={idx} className="hover:bg-gray-50 transition-colors group">
-                                                <td className="p-4 font-medium text-gray-800">
-                                                    {typeof med === 'string' ? med : med.name}
-                                                </td>
-                                                <td className="p-4 text-center">
-                                                    {typeof med === 'string' ? (
-                                                        <span className="text-gray-400">-</span>
-                                                    ) : (
-                                                        <span className={`px-3 py-1 rounded-full font-bold text-xs ${med.quantity < 10 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-700'}`}>
-                                                            {med.quantity}
-                                                        </span>
-                                                    )}
-                                                </td>
-                                                <td className="p-4 text-right font-mono text-gray-600">
-                                                    {typeof med === 'string' ? '-' : `${med.price.toLocaleString()} F`}
-                                                </td>
-                                                <td className="p-4 text-center">
-                                                    <button
-                                                        onClick={() => removeMedication(idx)}
-                                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                                                        title="Supprimer"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))
+                                        filteredMeds.map((med, idx) => {
+                                            const originalIdx = medications.indexOf(med);
+                                            return (
+                                                <tr key={idx} className="hover:bg-gray-50 transition-colors group">
+                                                    <td className="p-4 font-medium text-gray-800">
+                                                        {typeof med === 'string' ? med : med.name}
+                                                    </td>
+                                                    <td className="p-4 text-center">
+                                                        {typeof med === 'string' ? (
+                                                            <span className="text-gray-400">-</span>
+                                                        ) : (
+                                                            <div className="flex items-center justify-center gap-3">
+                                                                <button
+                                                                    onClick={() => adjustQuantity(originalIdx, -1)}
+                                                                    className="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-100 text-gray-400"
+                                                                >-</button>
+                                                                <span className={`w-8 font-bold text-xs ${med.quantity < 10 ? 'text-red-600' : 'text-green-700'}`}>
+                                                                    {med.quantity}
+                                                                </span>
+                                                                <button
+                                                                    onClick={() => adjustQuantity(originalIdx, 1)}
+                                                                    className="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-100 text-gray-400"
+                                                                >+</button>
+                                                            </div>
+                                                        )}
+                                                    </td>
+                                                    <td className="p-4 text-right font-mono text-gray-600">
+                                                        {typeof med === 'string' ? '-' : `${med.price.toLocaleString()} F`}
+                                                    </td>
+                                                    <td className="p-4 text-center">
+                                                        <button
+                                                            onClick={() => removeMedication(originalIdx)}
+                                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                                            title="Supprimer"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
                                     )}
                                 </tbody>
                             </table>

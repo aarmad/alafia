@@ -53,6 +53,26 @@ const DonorProfileSchema = new Schema({
     isAvailable: { type: Boolean, default: true },
 }, { _id: false });
 
+// Schéma pour le profil Maladie Chronique
+const ChronicProfileSchema = new Schema({
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    disease: { type: String, required: true },
+    medications: [{ type: String }],
+    treatingDoctor: { type: String }, // Nom ou ID du docteur
+    lastSync: { type: Date, default: Date.now }
+}, { _id: false });
+
+// Schéma pour le profil Docteur
+const DoctorProfileSchema = new Schema({
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    specialization: { type: String, required: true },
+    licenseNumber: { type: String, required: true },
+    hospital: { type: String, required: true },
+    followedPatients: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Patients assignés
+}, { _id: false });
+
 // Schéma Utilisateur Principal
 const UserSchema = new Schema({
     email: {
@@ -68,7 +88,7 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['pharmacy', 'pregnant', 'elderly', 'donor'],
+        enum: ['pharmacy', 'pregnant', 'elderly', 'donor', 'chronic', 'doctor'],
         required: [true, "Le rôle est requis"]
     },
     // Le profil est un objet flexible qui s'adapte au rôle

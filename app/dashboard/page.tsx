@@ -7,6 +7,8 @@ import PharmacyDashboard from '@/components/dashboards/PharmacyDashboard'
 import PregnantDashboard from '@/components/dashboards/PregnantDashboard'
 import ElderlyDashboard from '@/components/dashboards/ElderlyDashboard'
 import DonorDashboard from '@/components/dashboards/DonorDashboard'
+import ChronicDashboard from '@/components/dashboards/ChronicDashboard'
+import DoctorDashboard from '@/components/dashboards/DoctorDashboard'
 import LoadingScreen from '@/components/LoadingScreen'
 import { Loader2, LogOut } from 'lucide-react'
 
@@ -60,6 +62,10 @@ export default function DashboardPage() {
                 return <ElderlyDashboard user={user} />
             case 'donor':
                 return <DonorDashboard user={user} />
+            case 'chronic':
+                return <ChronicDashboard user={user} />
+            case 'doctor':
+                return <DoctorDashboard user={user} />
             default:
                 return (
                     <div className="text-center py-20">
