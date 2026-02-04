@@ -103,6 +103,16 @@ export default function PharmacyDashboard({ user }: { user: any }) {
         }
     }
 
+    const setQuantity = async (index: number, value: number) => {
+        const newMedsList = [...medications]
+        const med = newMedsList[index]
+        if (typeof med !== 'string') {
+            med.quantity = Math.max(0, value)
+            setMedications(newMedsList)
+            await updateProfile({ medications: newMedsList })
+        }
+    }
+
     const filteredMeds = medications.filter(med => {
         const name = typeof med === 'string' ? med : med.name
         return name.toLowerCase().includes(inventorySearch.toLowerCase())
@@ -276,9 +286,12 @@ export default function PharmacyDashboard({ user }: { user: any }) {
                                                                     onClick={() => adjustQuantity(originalIdx, -1)}
                                                                     className="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-100 text-gray-400"
                                                                 >-</button>
-                                                                <span className={`w-8 font-bold text-xs ${med.quantity < 10 ? 'text-red-600' : 'text-green-700'}`}>
-                                                                    {med.quantity}
-                                                                </span>
+                                                                <input
+                                                                    type="number"
+                                                                    value={med.quantity}
+                                                                    onChange={(e) => setQuantity(originalIdx, parseInt(e.target.value) || 0)}
+                                                                    className={`w-12 text-center font-bold text-xs bg-transparent border-none focus:ring-0 p-0 ${med.quantity < 10 ? 'text-red-600' : 'text-green-700'}`}
+                                                                />
                                                                 <button
                                                                     onClick={() => adjustQuantity(originalIdx, 1)}
                                                                     className="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-100 text-gray-400"

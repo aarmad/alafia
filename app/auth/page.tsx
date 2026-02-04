@@ -6,7 +6,7 @@ import { useState } from 'react'
 import Navbar from '@/components/Navbar'
 import { User, Building2, Heart, Users, Droplet, Mail, Lock, Phone, MapPin } from 'lucide-react'
 
-type UserRole = 'pharmacy' | 'pregnant' | 'elderly' | 'donor'
+type UserRole = 'pharmacy' | 'pregnant' | 'elderly' | 'donor' | 'chronic' | 'doctor'
 
 export default function AuthPage() {
     const [isLogin, setIsLogin] = useState(true)
@@ -31,6 +31,12 @@ export default function AuthPage() {
         // Donor specific
         bloodType: '',
         location: '',
+        // Chronic specific
+        disease: '',
+        // Doctor specific
+        specialization: '',
+        licenseNumber: '',
+        hospital: '',
     })
 
     const roles = [
@@ -61,6 +67,20 @@ export default function AuthPage() {
             icon: Droplet,
             description: 'Sauver des vies par le don de sang',
             color: 'from-red-500 to-red-600',
+        },
+        {
+            id: 'chronic' as UserRole,
+            name: 'Patient Chronique',
+            icon: Heart,
+            description: 'Suivez votre maladie et vos traitements',
+            color: 'from-orange-500 to-orange-600',
+        },
+        {
+            id: 'doctor' as UserRole,
+            name: 'Médecin / Spécialiste',
+            icon: User,
+            description: 'Publiez des alertes et suivez vos patients',
+            color: 'from-emerald-500 to-emerald-600',
         },
     ]
 
@@ -465,6 +485,66 @@ export default function AuthPage() {
                                                                 placeholder="Votre quartier"
                                                             />
                                                         </div>
+                                                    </div>
+                                                </>
+                                            )}
+
+                                            {/* Chronic-specific fields */}
+                                            {selectedRole === 'chronic' && (
+                                                <>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Maladie / Condition</label>
+                                                        <input
+                                                            type="text"
+                                                            name="disease"
+                                                            value={formData.disease}
+                                                            onChange={handleChange}
+                                                            required
+                                                            className="input-field"
+                                                            placeholder="Ex: Diabète Type 2"
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+
+                                            {/* Doctor-specific fields */}
+                                            {selectedRole === 'doctor' && (
+                                                <>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Spécialisation</label>
+                                                        <input
+                                                            type="text"
+                                                            name="specialization"
+                                                            value={formData.specialization}
+                                                            onChange={handleChange}
+                                                            required
+                                                            className="input-field"
+                                                            placeholder="Ex: Cardiologue"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Numéro de licence / RPPS</label>
+                                                        <input
+                                                            type="text"
+                                                            name="licenseNumber"
+                                                            value={formData.licenseNumber}
+                                                            onChange={handleChange}
+                                                            required
+                                                            className="input-field"
+                                                            placeholder="Votre matricule officiel"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Hôpital / Clinique actuel</label>
+                                                        <input
+                                                            type="text"
+                                                            name="hospital"
+                                                            value={formData.hospital}
+                                                            onChange={handleChange}
+                                                            required
+                                                            className="input-field"
+                                                            placeholder="Lieu d'exercice"
+                                                        />
                                                     </div>
                                                 </>
                                             )}
