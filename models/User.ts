@@ -53,13 +53,25 @@ const DonorProfileSchema = new Schema({
     isAvailable: { type: Boolean, default: true },
 }, { _id: false });
 
+// Schéma pour les entrées du carnet de santé
+const HealthRecordEntrySchema = new Schema({
+    date: { type: Date, default: Date.now },
+    doctorName: { type: String, required: true },
+    doctorId: { type: Schema.Types.ObjectId, ref: 'User' },
+    diagnosis: { type: String, required: true },
+    treatment: { type: String, required: true },
+    notes: { type: String },
+}, { _id: true });
+
 // Schéma pour le profil Maladie Chronique
 const ChronicProfileSchema = new Schema({
     name: { type: String, required: true },
     phone: { type: String, required: true },
     disease: { type: String, required: true },
     medications: [{ type: String }],
-    treatingDoctor: { type: String }, // Nom ou ID du docteur
+    treatingDoctorId: { type: Schema.Types.ObjectId, ref: 'User' }, // ID du docteur affilié
+    treatingDoctorName: { type: String },
+    healthRecords: [HealthRecordEntrySchema], // Carnet de santé virtuel
     lastSync: { type: Date, default: Date.now }
 }, { _id: false });
 
@@ -97,6 +109,9 @@ const UserSchema = new Schema({
         type: Schema.Types.Mixed,
         required: true
     },
+    // Gestion des relations Patient <-> Docteur
+    pendingRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Demandes reçues
+    connections: [{ type: Schema.Types.ObjectId, ref: 'User' }],      // Utilisateurs connectés (chat autorisé)
     createdAt: {
         type: Date,
         default: Date.now
