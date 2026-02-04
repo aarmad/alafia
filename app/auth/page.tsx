@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import LoadingScreen from '@/components/LoadingScreen'
 import { useState } from 'react'
 import Navbar from '@/components/Navbar'
-import { User, Building2, Heart, Users, Droplet, Mail, Lock, Phone, MapPin } from 'lucide-react'
+import { User, Building2, Heart, Users, Droplet, Mail, Lock, Phone, MapPin, Activity, Stethoscope } from 'lucide-react'
 
 type UserRole = 'pharmacy' | 'pregnant' | 'elderly' | 'donor' | 'chronic' | 'doctor'
 
@@ -33,6 +33,7 @@ export default function AuthPage() {
         location: '',
         // Chronic specific
         disease: '',
+        medications: '',
         // Doctor specific
         specialization: '',
         licenseNumber: '',
@@ -70,17 +71,17 @@ export default function AuthPage() {
         },
         {
             id: 'chronic' as UserRole,
-            name: 'Patient Chronique',
-            icon: Heart,
-            description: 'Suivez votre maladie et vos traitements',
+            name: 'Maladie Chronique',
+            icon: Activity,
+            description: 'Suivi rigoureux de votre traitement',
             color: 'from-orange-500 to-orange-600',
         },
         {
             id: 'doctor' as UserRole,
             name: 'Médecin / Spécialiste',
-            icon: User,
-            description: 'Publiez des alertes et suivez vos patients',
-            color: 'from-emerald-500 to-emerald-600',
+            icon: Stethoscope,
+            description: 'Suivez vos patients et publiez des alertes',
+            color: 'from-teal-500 to-teal-600',
         },
     ]
 
@@ -501,7 +502,18 @@ export default function AuthPage() {
                                                             onChange={handleChange}
                                                             required
                                                             className="input-field"
-                                                            placeholder="Ex: Diabète Type 2"
+                                                            placeholder="Ex: Diabète, Hypertension..."
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Médicaments actuels (Séparés par des virgules)</label>
+                                                        <input
+                                                            type="text"
+                                                            name="medications"
+                                                            value={formData.medications}
+                                                            onChange={handleChange}
+                                                            className="input-field"
+                                                            placeholder="Ex: Insuline, Metformine..."
                                                         />
                                                     </div>
                                                 </>
@@ -519,23 +531,11 @@ export default function AuthPage() {
                                                             onChange={handleChange}
                                                             required
                                                             className="input-field"
-                                                            placeholder="Ex: Cardiologue"
+                                                            placeholder="Ex: Cardiologue, Pédiatre..."
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="block text-sm font-medium mb-2">Numéro de licence / RPPS</label>
-                                                        <input
-                                                            type="text"
-                                                            name="licenseNumber"
-                                                            value={formData.licenseNumber}
-                                                            onChange={handleChange}
-                                                            required
-                                                            className="input-field"
-                                                            placeholder="Votre matricule officiel"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm font-medium mb-2">Hôpital / Clinique actuel</label>
+                                                        <label className="block text-sm font-medium mb-2">Hôpital / Clinique</label>
                                                         <input
                                                             type="text"
                                                             name="hospital"
@@ -544,6 +544,18 @@ export default function AuthPage() {
                                                             required
                                                             className="input-field"
                                                             placeholder="Lieu d'exercice"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium mb-2">Numéro de licence médicale</label>
+                                                        <input
+                                                            type="text"
+                                                            name="licenseNumber"
+                                                            value={formData.licenseNumber}
+                                                            onChange={handleChange}
+                                                            required
+                                                            className="input-field"
+                                                            placeholder="N° d'ordre des médecins"
                                                         />
                                                     </div>
                                                 </>

@@ -20,6 +20,8 @@ export default function PharmacyDashboard({ user }: { user: any }) {
     const [loading, setLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [inventorySearch, setInventorySearch] = useState('')
+    const [editingIdx, setEditingIdx] = useState<number | null>(null)
+    const [editValue, setEditValue] = useState('')
 
     // Form state
     const [newMedName, setNewMedName] = useState('')
@@ -103,14 +105,21 @@ export default function PharmacyDashboard({ user }: { user: any }) {
         }
     }
 
-    const setQuantity = async (index: number, value: number) => {
+    const saveQuantity = async (index: number) => {
+        const val = parseInt(editValue)
+        if (isNaN(val) || val < 0) {
+            setEditingIdx(null)
+            return
+        }
+
         const newMedsList = [...medications]
         const med = newMedsList[index]
         if (typeof med !== 'string') {
-            med.quantity = Math.max(0, value)
+            med.quantity = val
             setMedications(newMedsList)
             await updateProfile({ medications: newMedsList })
         }
+        setEditingIdx(null)
     }
 
     const filteredMeds = medications.filter(med => {
@@ -286,12 +295,29 @@ export default function PharmacyDashboard({ user }: { user: any }) {
                                                                     onClick={() => adjustQuantity(originalIdx, -1)}
                                                                     className="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-100 text-gray-400"
                                                                 >-</button>
-                                                                <input
-                                                                    type="number"
-                                                                    value={med.quantity}
-                                                                    onChange={(e) => setQuantity(originalIdx, parseInt(e.target.value) || 0)}
-                                                                    className={`w-12 text-center font-bold text-xs bg-transparent border-none focus:ring-0 p-0 ${med.quantity < 10 ? 'text-red-600' : 'text-green-700'}`}
-                                                                />
+
+                                                                {editingIdx === originalIdx ? (
+                                                                    <input
+                                                                        type="number"
+                                                                        className="w-16 text-center border rounded py-1 font-bold text-xs"
+                                                                        value={editValue}
+                                                                        onChange={e => setEditValue(e.target.value)}
+                                                                        onBlur={() => saveQuantity(originalIdx)}
+                                                                        onKeyDown={e => e.key === 'Enter' && saveQuantity(originalIdx)}
+                                                                        autoFocus
+                                                                    />
+                                                                ) : (
+                                                                    <span
+                                                                        onClick={() => {
+                                                                            setEditingIdx(originalIdx)
+                                                                            setEditValue(med.quantity.toString())
+                                                                        }}
+                                                                        className={`w-8 font-bold text-xs cursor-pointer hover:underline ${med.quantity < 10 ? 'text-red-600' : 'text-green-700'}`}
+                                                                    >
+                                                                        {med.quantity}
+                                                                    </span>
+                                                                )}
+
                                                                 <button
                                                                     onClick={() => adjustQuantity(originalIdx, 1)}
                                                                     className="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-100 text-gray-400"

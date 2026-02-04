@@ -78,7 +78,9 @@ export async function POST(req: Request) {
                     name: profileData.name,
                     phone: profileData.phone,
                     disease: profileData.disease,
-                    medications: profileData.medications || [],
+                    medications: typeof profileData.medications === 'string'
+                        ? profileData.medications.split(',').map((m: string) => m.trim()).filter((m: string) => m !== '')
+                        : profileData.medications || [],
                 };
                 break;
             case 'doctor':
