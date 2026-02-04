@@ -185,7 +185,10 @@ export default function Home() {
                 <h2 className="text-3xl font-black text-gray-900 mb-2">Actualités & <span className="text-red-500">Alertes</span></h2>
                 <p className="text-gray-500">Informations de santé vérifiées par des médecins togolais.</p>
               </div>
-              <button className="flex items-center gap-2 text-primary font-bold hover:underline mb-2">
+              <button
+                onClick={() => router.push('/publications')}
+                className="flex items-center gap-2 text-primary font-bold hover:underline mb-2"
+              >
                 Voir toutes les publications
                 <ArrowRight className="w-4 h-4" />
               </button>

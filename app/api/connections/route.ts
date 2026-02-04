@@ -35,15 +35,18 @@ export async function GET(req: Request) {
         }
 
         // Utilisation de find $in au lieu de populate pour éviter les erreurs de registration de modèle
-        const pendingRequests = await User.find(
+        const pendingDocs = await User.find(
             { _id: { $in: userDoc.pendingRequests || [] } },
             'email profile role'
         ).lean();
 
-        const connections = await User.find(
+        const connectionDocs = await User.find(
             { _id: { $in: userDoc.connections || [] } },
             'email profile role'
         ).lean();
+
+        const pendingRequests = pendingDocs.map((u: any) => ({ ...u, _id: u._id.toString() }));
+        const connections = connectionDocs.map((u: any) => ({ ...u, _id: u._id.toString() }));
 
         return NextResponse.json({
             success: true,
@@ -82,9 +85,19 @@ export async function POST(req: Request) {
                 return NextResponse.json({ success: false, message: 'Médecin introuvable' }, { status: 404 });
             }
 
-            // Ne pas s'ajouter soi-même
             if (targetId === authUser.userId) {
                 return NextResponse.json({ success: false, message: 'Action impossible' }, { status: 400 });
+            }
+
+            // Vérifier si une demande est déjà en cours ou si déjà connectés
+            const isAlreadyPending = doctor.pendingRequests?.some((id: any) => id.toString() === authUser.userId);
+            const isAlreadyConnected = doctor.connections?.some((id: any) => id.toString() === authUser.userId);
+
+            if (isAlreadyPending) {
+                return NextResponse.json({ success: false, message: 'Une demande est déjà en attente pour ce médecin' }, { status: 400 });
+            }
+            if (isAlreadyConnected) {
+                return NextResponse.json({ success: false, message: 'Vous êtes déjà connectés à ce médecin' }, { status: 400 });
             }
 
             await User.findByIdAndUpdate(targetId, {

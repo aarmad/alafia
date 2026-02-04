@@ -241,8 +241,12 @@ export default function DoctorDashboard({ user }: { user: any }) {
                                         {pendingRequests.map(req => (
                                             <div key={req._id} className="p-4 bg-gray-50 rounded-xl flex items-center justify-between border">
                                                 <div>
-                                                    <p className="font-bold text-gray-900">{req.profile.name}</p>
-                                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{req.profile.disease}</p>
+                                                    <p className="font-bold text-gray-900">{req.profile.name} <span className="text-[10px] bg-gray-200 px-1.5 py-0.5 rounded ml-2 uppercase opacity-60">{req.role}</span></p>
+                                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                                                        {req.role === 'chronic' ? req.profile.disease :
+                                                            req.role === 'pregnant' ? `Grossesse: ${req.profile.weeksPregnant} sem.` :
+                                                                req.role === 'elderly' ? `Âge: ${req.profile.age} ans` : 'Patient'}
+                                                    </p>
                                                 </div>
                                                 <div className="flex gap-2">
                                                     <button onClick={() => handleAction(req._id, 'accept')} className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"><Check className="w-4 h-4" /></button>
@@ -280,9 +284,13 @@ export default function DoctorDashboard({ user }: { user: any }) {
                                                 {pat.profile.name[0]}
                                             </div>
                                             <div>
-                                                <p className="font-bold text-gray-900">{pat.profile.name}</p>
+                                                <p className="font-bold text-gray-900">{pat.profile.name} <span className="text-[10px] bg-indigo-50 text-indigo-500 px-1.5 py-0.5 rounded ml-1 uppercase">{pat.role}</span></p>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-black uppercase">{pat.profile.disease}</span>
+                                                    <span className="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-black uppercase">
+                                                        {pat.role === 'chronic' ? pat.profile.disease :
+                                                            pat.role === 'pregnant' ? `Grossesse: ${pat.profile.weeksPregnant} sem.` :
+                                                                pat.role === 'elderly' ? `Âge: ${pat.profile.age} ans` : 'Patient'}
+                                                    </span>
                                                     <span className="text-[10px] text-gray-400 font-medium italic">{pat.email}</span>
                                                 </div>
                                             </div>
@@ -393,8 +401,8 @@ export default function DoctorDashboard({ user }: { user: any }) {
                             {messages.map((msg, i) => (
                                 <div key={i} className={`flex ${msg.sender === user.userId ? 'justify-end' : 'justify-start'}`}>
                                     <div className={`max-w-[80%] p-4 rounded-3xl text-sm shadow-sm ${msg.sender === user.userId
-                                            ? 'bg-indigo-600 text-white rounded-tr-none'
-                                            : 'bg-white text-gray-800 rounded-tl-none border'
+                                        ? 'bg-indigo-600 text-white rounded-tr-none'
+                                        : 'bg-white text-gray-800 rounded-tl-none border'
                                         }`}>
                                         {msg.content}
                                     </div>
