@@ -19,8 +19,11 @@ export async function POST(req: Request) {
 
         await connectDB();
 
-        // Trouver l'utilisateur (inclure explicitement le mot de passe car sélectionné false par défaut souvent)
-        const user = await User.findOne({ email });
+        // Trouver l'utilisateur
+        const user = await User.findOne({ email }).catch(err => {
+            console.error("Login DB Find error:", err);
+            throw new Error("Erreur base de données");
+        });
 
         if (!user) {
             return NextResponse.json(
@@ -42,7 +45,7 @@ export async function POST(req: Request) {
         // Générer le token
         const token = jwt.sign(
             { userId: user._id, email: user.email, role: user.role },
-            JWT_SECRET,
+            process.env.JWT_SECRET || 'alafia_secret_key_change_me',
             { expiresIn: '7d' }
         );
 
@@ -62,9 +65,9 @@ export async function POST(req: Request) {
             { status: 200 }
         );
     } catch (error: any) {
-        console.error('Erreur connexion:', error);
+        console.error('Erreur API Connexion:', error);
         return NextResponse.json(
-            { success: false, message: 'Erreur serveur' },
+            { success: false, message: `Erreur : ${error.message || 'Erreur serveur'}` },
             { status: 500 }
         );
     }
