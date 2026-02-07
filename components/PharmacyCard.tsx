@@ -78,7 +78,7 @@ export default function PharmacyCard({ pharmacy, userLocation }: PharmacyCardPro
                         key={index}
                         className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium"
                     >
-                        {med}
+                        {typeof med === 'string' ? med : med.name}
                     </span>
                 ))}
                 {pharmacy.medications.length > 3 && (
